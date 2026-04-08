@@ -1,0 +1,21 @@
+﻿council,application_no,address,development_type,description,lodged_date,decision,decision_date,has_progress_info,has_documents,status_clarity_score,document_completeness_score,update_visibility_score,navigation_ease_score,notes
+Liverpool City Council,CDC-101238,25 HUNTINGDALE DRIVE DENHAM COURT 2565,Detached development,Complying Development Certificate Application,2022-07-14,Under Assessment,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101256,28 MALINYA CRESCENT MOOREBANK 2170,Secondary dwelling,Complying Development Certificate Application,2022-07-14,Approved,2022-08-08,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101308,629 LITTLE STREET AUSTRAL 2179,"Garages, carports and car parking spaces,Dwelling house",Modification to Complying Development Certificate,2022-07-15,Under Assessment,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101320,24 FLYING AVENUE MIDDLETON GRANGE 2171,Dwelling house,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101376,DAPPLE STREET AUSTRAL 2179,Dwelling house,Modification to Complying Development Certificate,2022-07-19,Approved,2022-07-18,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101404,83 GURNER AVENUE AUSTRAL 2179,"Educational establishment ,Garages, carports and car parking spaces",Modification to Complying Development Certificate,2022-07-15,Approved,2022-07-20,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101431,50 BOLAC ROAD AUSTRAL 2179,Dwelling house,Complying Development Certificate Application,2022-07-18,Approved,2022-08-17,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101440,52 SOLDIERS PARADE EDMONDSON PARK 2174,Other,Complying Development Certificate Application,2022-08-01,Approved,2022-07-15,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-10151,44 TULLY AVENUE LIVERPOOL 2170,Dwelling house,Complying Development Certificate Application,2021-01-21,Under Assessment,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101539,124 LETHBRIDGE ROAD AUSTRAL 2179,Dwelling house,Complying Development Certificate Application,2022-07-18,Approved,2022-09-19,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100661,57 MEEHAN AVENUE HAMMONDVILLE 2170,Dwelling house,Complying Development Certificate Application,2022-07-14,Approved,2022-07-30,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100834,65 PORT HEDLAND ROAD EDMONDSON PARK 2174,Dwelling house,Complying Development Certificate Application,2022-07-16,Approved,2022-07-14,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100841,51 BUSBY ROAD BUSBY 2168,Group homes ,Complying Development Certificate Application,2022-07-27,Approved,2022-09-16,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100897,10 FULHAM STREET BUSBY 2168,"Dual occupancy,Subdivision of land",Complying Development Certificate Application,,Submitted,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101015,CARPATHIAN ROAD AUSTRAL 2179,Swimming pools,Complying Development Certificate Application,2022-07-26,Approved,2022-07-14,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101088,13 DEFENCE STREET MIDDLETON GRANGE 2171,Dwelling house,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
+Liverpool City Council,CDC-101091,13 DEFENCE STREET MIDDLETON GRANGE 2171,Dwelling house,Complying Development Certificate Application,2022-07-14,Approved,2022-07-29,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-101180,48 DUNBIER AVENUE LURNEA 2170,"Secondary dwelling,Alterations and additions to residential development,Swimming pools",Complying Development Certificate Application,2022-07-21,Approved,2022-09-12,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100316,1 MACKEN STREET LIVERPOOL 2170,Subdivision of land,Complying Development Certificate Application,2022-07-11,Approved,2022-07-09,Yes,No,2,0,2,2,Data extracted via API
+Liverpool City Council,CDC-100527,5 HAVARD PLACE ASHCROFT 2168,Secondary dwelling,Modification to Complying Development Certificate,2022-07-14,Approved,2022-07-14,Yes,No,2,0,2,2,Data extracted via API

@@ -1,0 +1,21 @@
+﻿council,application_no,address,development_type,description,lodged_date,decision,decision_date,has_progress_info,has_documents,status_clarity_score,document_completeness_score,update_visibility_score,navigation_ease_score,notes
+Ryde City Council,CDC-101382,36 FARNELL STREET WEST RYDE 2114,Dwelling house,Modification to Complying Development Certificate,2022-07-20,Approved,2022-07-20,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101426,59 ABUKLEA ROAD MARSFIELD 2122,"Demolition,Attached development",Complying Development Certificate Application,2022-07-22,Approved,2022-11-28,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101476,18 AGINCOURT ROAD MARSFIELD 2122,Dwelling house,Complying Development Certificate Application,,Declined,,Yes,No,2,0,1,2,Data extracted via API
+Ryde City Council,CDC-101508,27 HOLLIS AVENUE DENISTONE EAST 2112,Demolition,Complying Development Certificate Application,2022-07-15,Approved,2022-07-15,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101555,6 HORDERN AVENUE PUTNEY 2112,Swimming pools,Modification to Complying Development Certificate,2022-07-18,Approved,2022-07-25,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101558,7-11 TALAVERA ROAD MACQUARIE PARK 2113,Alterations and additions to commercial development,Complying Development Certificate Application,2022-07-19,Approved,2022-07-19,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100645,6 CULGOA AVENUE EASTWOOD 2122,"Dual occupancy,Demolition,Garages, carports and car parking spaces,Earthworks, retaining walls, protection of trees",Complying Development Certificate Application,2022-07-12,Approved,2022-09-21,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100777,20 POTTS STREET RYDE 2112,Dwelling house,Complying Development Certificate Application,2022-10-04,Approved,2022-10-21,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100828,41 SWAN STREET GLADESVILLE 2111,Alterations and additions to residential development,Complying Development Certificate Application,2022-09-09,Approved,2022-09-09,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100837,4 CLANWILLIAM STREET EASTWOOD 2122,Dual occupancy,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
+Ryde City Council,CDC-100930,24 MOSS STREET WEST RYDE 2114,Subdivision of land,Complying Development Certificate Application,2022-07-15,Approved,2022-07-15,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100932,20 POTTS STREET RYDE 2112,Demolition,Complying Development Certificate Application,2022-07-13,Approved,2022-07-29,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100977,5 GRAND AVENUE WEST RYDE 2114,Dwelling house,Complying Development Certificate Application,2022-07-14,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
+Ryde City Council,CDC-100985,39 THRELFALL STREET EASTWOOD 2122,Dwelling house,Modification to Complying Development Certificate,2022-07-28,Approved,2022-08-02,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101010,4 TALAVERA ROAD MACQUARIE PARK 2113,Alterations and additions to commercial development,Complying Development Certificate Application,2022-07-14,Approved,2022-07-14,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101057,160 TENNYSON ROAD TENNYSON POINT 2111,"Dual occupancy,Swimming pools",Complying Development Certificate Application,2022-07-14,Approved,2022-08-02,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101059,65 CHAMPION ROAD TENNYSON POINT 2111,Dwelling house,Modification to Complying Development Certificate,2022-08-18,Approved,2022-08-18,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-101182,29 HARRISON AVENUE EASTWOOD 2122,Swimming pools,Complying Development Certificate Application,2022-07-14,Approved,2022-07-19,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100406,22 CROWLEY CRESCENT MELROSE PARK 2114,Swimming pools,Complying Development Certificate Application,2022-07-11,Approved,2023-02-08,Yes,No,2,0,2,2,Data extracted via API
+Ryde City Council,CDC-100421,41 SWAN STREET GLADESVILLE 2111,Alterations and additions to residential development,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API

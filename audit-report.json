@@ -1,0 +1,362 @@
+{
+  "generatedAt": "2026-04-08T06:36:17.437Z",
+  "perFile": [
+    {
+      "file": "Burwood_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Campbelltown_City_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "City_of_Parramatta_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Georges River.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Inner_West_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Liverpool_City_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "North Sydney.csv",
+      "schemaType": "northSydney",
+      "recordCount": 20
+    },
+    {
+      "file": "Ryde_City_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Sutherland Shire.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "The_Council_of_the_Municipality_of_Hunters_Hill.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    },
+    {
+      "file": "Willoughby_City_Council.csv",
+      "schemaType": "schemaA",
+      "recordCount": 20
+    }
+  ],
+  "totals": {
+    "totalRecords": 240,
+    "totalIssues": 32
+  },
+  "dateParseFailures": [],
+  "decisionBeforeLodged": [
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-26",
+      "decision_date": "2022-07-25",
+      "file": "Burwood_Council.csv",
+      "rowNumber": 3,
+      "application_no": "CDC-100927",
+      "council": "Burwood Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-18",
+      "decision_date": "2022-07-14",
+      "file": "Burwood_Council.csv",
+      "rowNumber": 4,
+      "application_no": "CDC-101076",
+      "council": "Burwood Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-08-26",
+      "decision_date": "2022-07-28",
+      "file": "Burwood_Council.csv",
+      "rowNumber": 8,
+      "application_no": "CDC-100602",
+      "council": "Burwood Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-11-26",
+      "decision_date": "2022-11-23",
+      "file": "Campbelltown_City_Council.csv",
+      "rowNumber": 14,
+      "application_no": "CDC-100770",
+      "council": "Campbelltown City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-12-09",
+      "decision_date": "2022-09-23",
+      "file": "City_of_Parramatta_Council.csv",
+      "rowNumber": 12,
+      "application_no": "CDC-100705",
+      "council": "City of Parramatta Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-14",
+      "decision_date": "2022-07-13",
+      "file": "City_of_Parramatta_Council.csv",
+      "rowNumber": 14,
+      "application_no": "CDC-100771",
+      "council": "City of Parramatta Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-21",
+      "decision_date": "2022-07-15",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 4,
+      "application_no": "CDC-101333",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-08-04",
+      "decision_date": "2022-08-03",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 8,
+      "application_no": "CDC-101529",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-13",
+      "decision_date": "2022-07-12",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 14,
+      "application_no": "CDC-100670",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-14",
+      "decision_date": "2022-07-13",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 17,
+      "application_no": "CDC-100793",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2021-01-25",
+      "decision_date": "2021-01-22",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 19,
+      "application_no": "CDC-10097",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-08-01",
+      "decision_date": "2022-07-26",
+      "file": "Council_of_the_City_of_Sydney.csv",
+      "rowNumber": 21,
+      "application_no": "CDC-101023",
+      "council": "Council of the City of Sydney"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2025-07-14",
+      "decision_date": "2025-06-06",
+      "file": "Georges River.csv",
+      "rowNumber": 2,
+      "application_no": "CDC2025/0300",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-04-01",
+      "decision_date": "2026-03-30",
+      "file": "Georges River.csv",
+      "rowNumber": 5,
+      "application_no": "CC2026/0045",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-04-01",
+      "decision_date": "2026-03-26",
+      "file": "Georges River.csv",
+      "rowNumber": 6,
+      "application_no": "CDC2026/0155",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-04-01",
+      "decision_date": "2026-03-29",
+      "file": "Georges River.csv",
+      "rowNumber": 14,
+      "application_no": "CDC2026/0158",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-04-01",
+      "decision_date": "2026-03-30",
+      "file": "Georges River.csv",
+      "rowNumber": 15,
+      "application_no": "MODCC2026/0004",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-09",
+      "decision_date": "2026-03-04",
+      "file": "Georges River.csv",
+      "rowNumber": 16,
+      "application_no": "CDC2026/0102",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-09",
+      "decision_date": "2026-03-02",
+      "file": "Georges River.csv",
+      "rowNumber": 17,
+      "application_no": "CDC2026/0103",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-09",
+      "decision_date": "2026-03-06",
+      "file": "Georges River.csv",
+      "rowNumber": 18,
+      "application_no": "CDC2026/0104",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-20",
+      "decision_date": "2026-03-17",
+      "file": "Georges River.csv",
+      "rowNumber": 19,
+      "application_no": "CDC2026/0133",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-19",
+      "decision_date": "2026-03-17",
+      "file": "Georges River.csv",
+      "rowNumber": 20,
+      "application_no": "MODCDC2026/0021",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2026-03-19",
+      "decision_date": "2026-03-16",
+      "file": "Georges River.csv",
+      "rowNumber": 21,
+      "application_no": "MODCDC2026/0020",
+      "council": "Georges River"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-22",
+      "decision_date": "2022-07-21",
+      "file": "Inner_West_Council.csv",
+      "rowNumber": 18,
+      "application_no": "CDC-102160",
+      "council": "Inner West Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-19",
+      "decision_date": "2022-07-18",
+      "file": "Liverpool_City_Council.csv",
+      "rowNumber": 6,
+      "application_no": "CDC-101376",
+      "council": "Liverpool City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-08-01",
+      "decision_date": "2022-07-15",
+      "file": "Liverpool_City_Council.csv",
+      "rowNumber": 9,
+      "application_no": "CDC-101440",
+      "council": "Liverpool City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-16",
+      "decision_date": "2022-07-14",
+      "file": "Liverpool_City_Council.csv",
+      "rowNumber": 13,
+      "application_no": "CDC-100834",
+      "council": "Liverpool City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-26",
+      "decision_date": "2022-07-14",
+      "file": "Liverpool_City_Council.csv",
+      "rowNumber": 16,
+      "application_no": "CDC-101015",
+      "council": "Liverpool City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-11",
+      "decision_date": "2022-07-09",
+      "file": "Liverpool_City_Council.csv",
+      "rowNumber": 20,
+      "application_no": "CDC-100316",
+      "council": "Liverpool City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-07-25",
+      "decision_date": "2022-07-21",
+      "file": "Willoughby_City_Council.csv",
+      "rowNumber": 6,
+      "application_no": "CDC-100860",
+      "council": "Willoughby City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-10-22",
+      "decision_date": "2022-10-21",
+      "file": "Willoughby_City_Council.csv",
+      "rowNumber": 14,
+      "application_no": "CDC-101611",
+      "council": "Willoughby City Council"
+    },
+    {
+      "type": "decision_before_lodged",
+      "lodged_date": "2022-09-08",
+      "decision_date": "2022-08-09",
+      "file": "Willoughby_City_Council.csv",
+      "rowNumber": 17,
+      "application_no": "CDC-102227",
+      "council": "Willoughby City Council"
+    }
+  ],
+  "missingKeyFields": [],
+  "booleanParseFailures": []
+}
