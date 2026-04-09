@@ -4,6 +4,37 @@ import { parseToIsoDate } from "../date.js";
 import { normalizeDecision } from "../decision.js";
 import { type AuditIssue } from "./schemaA.js";
 
+/** Same parsing as schemaA: trim, empty -> null, non-finite -> null */
+function numOrNull(s: unknown): number | null {
+  if (s === null || s === undefined) return null;
+  const raw = String(s).trim();
+  if (!raw) return null;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** First non-null numeric among candidate column keys (canonical name first, then aliases). */
+function scoreFromRow(row: Record<string, string>, keys: string[]): number | null {
+  for (const k of keys) {
+    const v = numOrNull(row[k]);
+    if (v !== null) return v;
+  }
+  return null;
+}
+
+const STATUS_CLARITY_KEYS = [
+  "status_clarity_score",
+  "status_clarity",
+  "clarity_score"
+];
+const DOC_COMPLETENESS_KEYS = [
+  "document_completeness_score",
+  "document_completeness",
+  "doc_completeness_score"
+];
+const UPDATE_VISIBILITY_KEYS = ["update_visibility_score", "update_visibility"];
+const NAVIGATION_EASE_KEYS = ["navigation_ease_score", "navigation_ease"];
+
 export function mapNorthSydneyRow(args: {
   file: string;
   rowNumber: number;
@@ -111,10 +142,10 @@ export function mapNorthSydneyRow(args: {
     decision_date: decisionRes.value,
     has_progress_info: hasProgressRes.value,
     has_documents: hasDocsRes.value,
-    status_clarity_score: null,
-    document_completeness_score: null,
-    update_visibility_score: null,
-    navigation_ease_score: null,
+    status_clarity_score: scoreFromRow(row, STATUS_CLARITY_KEYS),
+    document_completeness_score: scoreFromRow(row, DOC_COMPLETENESS_KEYS),
+    update_visibility_score: scoreFromRow(row, UPDATE_VISIBILITY_KEYS),
+    navigation_ease_score: scoreFromRow(row, NAVIGATION_EASE_KEYS),
     notes
   };
 }

@@ -55,6 +55,12 @@
 
 标准化结果输出为：`normalized-records.json`。
 
+### Source vs transformed fields（重要）
+- 本项目在展示层使用的 transparency-related scores（`status_clarity_score`、`document_completeness_score`、`update_visibility_score`、`navigation_ease_score`）不应被解读为“官方原生评分体系”。
+- 在当前数据快照中，部分 council 的分数字段出现在 CSV 中；但这并不自动意味着该分数是 portal 原生发布且长期稳定可得。
+- 在历史版本或其他来源结构中，这些字段可能为缺失/空值（null），或需要依据可见页面证据按统一 rubric 补充编码后再进入对比分析。
+- 因此，dashboard 中的分数应理解为“用于横向比较的分析型指标”，而非直接等同于官方业务字段。
+
 ## 5) Dashboard 页面组成
 前端位于 `frontend/`，核心页面如下：
 
@@ -85,7 +91,7 @@
 - **2** = clearly visible / well surfaced
 
 这些分数由跨 council 共用的 rubric 进行编码，部分指标依据门户页面可见证据与截图进行人工判定。  
-它们属于用于横向比较的分析型指标，不代表官方 council 绩效评级。
+它们属于用于横向比较的分析型指标，不代表官方 council 绩效评级，也不应被表述为“所有来源都原生提供的完整评分字段”。
 
 ## 7) 如何运行项目
 ### A. 生成标准化数据（根目录）
@@ -107,6 +113,7 @@ npm run dev
 ## 8) 当前局限性
 - 不同 council portal 的 schema、页面结构和公开路径并不一致，跨 council 对比存在天然异构性。
 - 部分指标依赖页面可见证据与人工 rubric 编码，不完全等同于原生结构化字段。
+- 对于历史上出现过缺失/空值（null）的分数字段，当前展示值可能来自后续补充编码或数据版本更新，需与来源版本一并解读。
 - 评分差异可能同时反映“实际透明度差异”与“信息呈现方式差异”，解读时应结合来源结构进行判断。
 - 个别记录可能存在时间先后异常（如 `decision_date` 早于 `lodged_date`），本项目会审计标记，但不自动改写原值。
 - 当前版本以桌面端展示和作业演示为主，尚未覆盖更深入统计建模。

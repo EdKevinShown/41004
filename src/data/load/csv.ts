@@ -50,9 +50,19 @@ function sameHeaders(actual: string[], expected: string[]): boolean {
   return true;
 }
 
+/** True when `actual` starts with `expected` (same order, same names). Allows trailing columns (e.g. scores). */
+function headerPrefixMatches(actual: string[], expected: string[]): boolean {
+  if (actual.length < expected.length) return false;
+  for (let i = 0; i < expected.length; i++) {
+    if (actual[i] !== expected[i]) return false;
+  }
+  return true;
+}
+
 export function detectSchemaType(headers: string[]): SchemaType {
   if (sameHeaders(headers, SCHEMA_A_HEADERS)) return "schemaA";
   if (sameHeaders(headers, NORTH_SYDNEY_HEADERS)) return "northSydney";
+  if (headerPrefixMatches(headers, NORTH_SYDNEY_HEADERS)) return "northSydney";
   return "unknown";
 }
 

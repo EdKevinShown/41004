@@ -55,6 +55,25 @@ export function parseToIsoDate(
     return { value: raw as IsoDateString };
   }
 
+  // Year-first with slashes: YYYY/M/D or YYYY/MM/DD (e.g. some North Sydney CSV exports)
+  const ymdSlash = raw.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+  if (ymdSlash) {
+    const y = Number(ymdSlash[1]);
+    const m = Number(ymdSlash[2]);
+    const d = Number(ymdSlash[3]);
+    if (!isValidYMD(y, m, d)) {
+      return { value: null, error: { code: "invalid_calendar_date", input: raw } };
+    }
+    if (
+      (opts?.minYear !== undefined && y < opts.minYear) ||
+      (opts?.maxYear !== undefined && y > opts.maxYear)
+    ) {
+      return { value: null, error: { code: "out_of_range", input: raw } };
+    }
+    const isoValue = `${y}-${pad2(m)}-${pad2(d)}` as IsoDateString;
+    return { value: isoValue };
+  }
+
   // AU-ish: D/M/YYYY or DD/MM/YYYY
   const dmy = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (dmy) {
