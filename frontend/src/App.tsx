@@ -67,8 +67,14 @@ export default function App() {
       </main>
 
       <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-4 text-xs text-slate-500">
-          Data source: <span className="font-mono">/normalized-records.json</span>
+        <div className="mx-auto max-w-7xl space-y-1 px-6 py-4 text-xs text-slate-500">
+          <div>
+            Data source: <span className="font-mono">/normalized-records.json</span>
+          </div>
+          <div>
+            Scores are comparative transparency indicators based on visible portal evidence. They do
+            not assess the quality of council planning decisions.
+          </div>
         </div>
       </footer>
     </div>

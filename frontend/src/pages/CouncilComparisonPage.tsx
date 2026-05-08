@@ -3,7 +3,18 @@ import { ChartCard } from "../components/ChartCard";
 import { StatCard } from "../components/StatCard";
 import { useRecords } from "../data/useRecords";
 import { getCouncilLabel } from "../lib/councilLabels";
-import { avg, meanTransparencyScore, pct, safeBool, uniqueCouncils } from "../lib/metrics";
+import {
+  avg,
+  calculateDataQualityFlags,
+  calculateEvidenceBasedTransparencyBreakdown,
+  calculateWeightedTransparencyIndex,
+  derivePortalSource,
+  meanTransparencyScore,
+  pct,
+  safeBool,
+  uniqueCouncils,
+  getDuplicateCompositeKeys
+} from "../lib/metrics";
 import {
   Bar,
   BarChart,
@@ -17,6 +28,7 @@ import {
 
 type CouncilRow = {
   council: string;
+  portalSource: string;
   cases: number;
   hasDocumentsPct: number;
   hasProgressPct: number;
@@ -25,15 +37,24 @@ type CouncilRow = {
   avgUpdateVisibility: number | null;
   avgNavigationEase: number | null;
   avgTransparency: number | null;
+  avgWeightedTransparencyIndex: number | null;
+  avgEvidenceBasedTransparencyScore: number | null;
+  avgStatusVisibilityScore: number | null;
+  avgProgressVisibilityScore: number | null;
+  avgBasicInformationCompletenessScore: number | null;
+  avgDataQualityReliabilityScore: number | null;
+  dateAnomalyCount: number;
+  reviewRequiredCount: number;
 };
 
 export function CouncilComparisonPage() {
   const { state } = useRecords();
-  const [sortBy, setSortBy] = useState<"cases" | "transparency">("cases");
+  const [sortBy, setSortBy] = useState<"cases" | "ebt" | "legacyTransparency">("cases");
 
   const councilRows = useMemo((): CouncilRow[] => {
     if (state.status !== "ready") return [];
     const records = state.records;
+    const duplicateKeys = getDuplicateCompositeKeys(records);
     const councils = uniqueCouncils(records);
 
     return councils.map((council) => {
@@ -47,9 +68,27 @@ export function CouncilComparisonPage() {
       const avgUpdateVisibility = avg(rs.map((r) => r.update_visibility_score));
       const avgNavigationEase = avg(rs.map((r) => r.navigation_ease_score));
       const avgTransparency = avg(rs.map((r) => meanTransparencyScore(r)));
+      const avgWeightedTransparencyIndex = avg(rs.map((r) => calculateWeightedTransparencyIndex(r)));
+      const ebtBreakdowns = rs.map((r) => calculateEvidenceBasedTransparencyBreakdown(r, duplicateKeys));
+      const avgEvidenceBasedTransparencyScore = avg(
+        ebtBreakdowns.map((b) => b.evidence_based_transparency_score)
+      );
+      const avgStatusVisibilityScore = avg(ebtBreakdowns.map((b) => b.status_visibility_score));
+      const avgProgressVisibilityScore = avg(ebtBreakdowns.map((b) => b.progress_visibility_score));
+      const avgBasicInformationCompletenessScore = avg(
+        ebtBreakdowns.map((b) => b.basic_information_completeness_score)
+      );
+      const avgDataQualityReliabilityScore = avg(
+        ebtBreakdowns.map((b) => b.data_quality_reliability_score)
+      );
+      const dateAnomalyCount = rs.filter((r) => calculateDataQualityFlags(r).dateAnomaly).length;
+      const reviewRequiredCount = rs.filter(
+        (r) => calculateDataQualityFlags(r).dataQualityFlag === "Review required"
+      ).length;
 
       return {
         council,
+        portalSource: derivePortalSource(council),
         cases,
         hasDocumentsPct: cases ? docs / cases : 0,
         hasProgressPct: cases ? prog / cases : 0,
@@ -57,7 +96,15 @@ export function CouncilComparisonPage() {
         avgDocCompleteness,
         avgUpdateVisibility,
         avgNavigationEase,
-        avgTransparency
+        avgTransparency,
+        avgWeightedTransparencyIndex,
+        avgEvidenceBasedTransparencyScore,
+        avgStatusVisibilityScore,
+        avgProgressVisibilityScore,
+        avgBasicInformationCompletenessScore,
+        avgDataQualityReliabilityScore,
+        dateAnomalyCount,
+        reviewRequiredCount
       };
     });
   }, [state]);
@@ -67,6 +114,11 @@ export function CouncilComparisonPage() {
 
   const sortedRows = [...councilRows].sort((a, b) => {
     if (sortBy === "cases") return b.cases - a.cases;
+    if (sortBy === "ebt") {
+      return (
+        (b.avgEvidenceBasedTransparencyScore ?? -1) - (a.avgEvidenceBasedTransparencyScore ?? -1)
+      );
+    }
     return (b.avgTransparency ?? -1) - (a.avgTransparency ?? -1);
   });
 
@@ -86,6 +138,10 @@ export function CouncilComparisonPage() {
     council: r.council,
     documents: Math.round(r.hasDocumentsPct * 100),
     progress: Math.round(r.hasProgressPct * 100),
+    ebt:
+      r.avgEvidenceBasedTransparencyScore === null
+        ? null
+        : Number(r.avgEvidenceBasedTransparencyScore.toFixed(2)),
     transparency: r.avgTransparency === null ? null : Number(r.avgTransparency.toFixed(2))
   }));
 
@@ -114,10 +170,13 @@ export function CouncilComparisonPage() {
             <select
               className="rounded-md border border-slate-300 px-2 py-1"
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "cases" | "transparency")}
+              onChange={(e) =>
+                setSortBy(e.target.value as "cases" | "ebt" | "legacyTransparency")
+              }
             >
               <option value="cases">Case count</option>
-              <option value="transparency">Average transparency score</option>
+              <option value="ebt">Avg evidence-based transparency score</option>
+              <option value="legacyTransparency">Legacy avg transparency (0–2)</option>
             </select>
           </div>
         </div>
@@ -131,9 +190,9 @@ export function CouncilComparisonPage() {
                   <div className="text-sm font-semibold text-slate-900">{r.cases}</div>
                 </div>
                 <div>
-                  <div className="uppercase tracking-wide text-slate-500">Avg transparency</div>
+                  <div className="uppercase tracking-wide text-slate-500">Avg EBT score</div>
                   <div className="text-sm font-semibold text-slate-900">
-                    {r.avgTransparency?.toFixed(2) ?? "—"}
+                    {r.avgEvidenceBasedTransparencyScore?.toFixed(1) ?? "—"}
                   </div>
                 </div>
                 <div>
@@ -219,8 +278,39 @@ export function CouncilComparisonPage() {
       </ChartCard>
 
       <ChartCard
-        title="Average transparency score by council"
-        subtitle="Mean of (status_clarity, document_completeness, update_visibility, navigation_ease)"
+        title="Evidence-Based Transparency Score by council"
+        subtitle="Primary model (0–100): status + progress + field completeness + data-quality reliability"
+      >
+        <div className="h-[360px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 20, right: 16, left: 4, bottom: 80 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="council"
+                tickFormatter={(value) => getCouncilLabel(String(value))}
+                angle={-30}
+                textAnchor="end"
+                interval={0}
+                height={78}
+              />
+              <YAxis domain={[0, 100]} />
+              <Tooltip
+                labelFormatter={(label) => {
+                  const full = String(label);
+                  const short = getCouncilLabel(full);
+                  return short === full ? full : `${short} (${full})`;
+                }}
+              />
+              <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
+              <Bar dataKey="ebt" name="Avg EBT score" fill="#7c3aed" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ChartCard>
+
+      <ChartCard
+        title="Legacy average transparency (0–2)"
+        subtitle="Reference only — includes document/navigation rubric means; not the Assignment 3 primary model"
       >
         <div className="h-[360px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -243,7 +333,7 @@ export function CouncilComparisonPage() {
                 }}
               />
               <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
-              <Bar dataKey="transparency" name="Avg transparency" fill="#a855f7" />
+              <Bar dataKey="transparency" name="Legacy avg transparency" fill="#94a3b8" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -254,6 +344,7 @@ export function CouncilComparisonPage() {
           <thead className="sticky top-0 bg-slate-100">
             <tr className="border-b border-slate-200">
               <th className="p-3 font-semibold">Council</th>
+              <th className="p-3 font-semibold">Portal source</th>
               <th className="p-3 font-semibold">Cases</th>
               <th className="p-3 font-semibold">Docs</th>
               <th className="p-3 font-semibold">Progress</th>
@@ -261,6 +352,14 @@ export function CouncilComparisonPage() {
               <th className="p-3 font-semibold">Avg doc completeness</th>
               <th className="p-3 font-semibold">Avg update visibility</th>
               <th className="p-3 font-semibold">Avg navigation ease</th>
+              <th className="p-3 font-semibold">Avg EBT (0–100)</th>
+              <th className="p-3 font-semibold">Avg status vis.</th>
+              <th className="p-3 font-semibold">Avg progress vis.</th>
+              <th className="p-3 font-semibold">Avg field completeness</th>
+              <th className="p-3 font-semibold">Avg DQR</th>
+              <th className="p-3 font-semibold">Legacy weighted index</th>
+              <th className="p-3 font-semibold">Date anomalies</th>
+              <th className="p-3 font-semibold">Review required</th>
             </tr>
           </thead>
           <tbody>
@@ -270,6 +369,7 @@ export function CouncilComparisonPage() {
                 className={`border-b border-slate-100 ${idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"} hover:bg-sky-50`}
               >
                 <td className="p-3">{getCouncilLabel(r.council)}</td>
+                <td className="p-3">{r.portalSource}</td>
                 <td className="p-3">{r.cases}</td>
                 <td className="p-3">{pct(Math.round(r.hasDocumentsPct * r.cases), r.cases)}</td>
                 <td className="p-3">{pct(Math.round(r.hasProgressPct * r.cases), r.cases)}</td>
@@ -277,6 +377,14 @@ export function CouncilComparisonPage() {
                 <td className="p-3">{r.avgDocCompleteness?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgUpdateVisibility?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgNavigationEase?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgEvidenceBasedTransparencyScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgStatusVisibilityScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgProgressVisibilityScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgBasicInformationCompletenessScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgDataQualityReliabilityScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgWeightedTransparencyIndex?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.dateAnomalyCount}</td>
+                <td className="p-3">{r.reviewRequiredCount}</td>
               </tr>
             ))}
           </tbody>

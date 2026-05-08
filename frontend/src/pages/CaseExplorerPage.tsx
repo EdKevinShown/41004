@@ -1,7 +1,15 @@
 import { useMemo, useState } from "react";
 import { Modal } from "../components/Modal";
 import { useRecords } from "../data/useRecords";
-import { safeBool, uniqueCouncils } from "../lib/metrics";
+import {
+  calculateDataQualityFlags,
+  calculateEvidenceBasedTransparencyBreakdown,
+  calculateWeightedTransparencyIndex,
+  derivePortalSource,
+  getDuplicateCompositeKeys,
+  safeBool,
+  uniqueCouncils
+} from "../lib/metrics";
 import { type StandardCouncilRecord } from "../types";
 
 type Filters = {
@@ -9,6 +17,8 @@ type Filters = {
   council: string;
   decision: string;
   development_type: string;
+  portal_source: "" | "Council-managed portal" | "NSW Planning Portal";
+  data_quality_flag: "" | "OK" | "Review required";
   has_documents: "" | "true" | "false";
   has_progress_info: "" | "true" | "false";
 };
@@ -29,10 +39,17 @@ export function CaseExplorerPage() {
     council: "",
     decision: "",
     development_type: "",
+    portal_source: "",
+    data_quality_flag: "",
     has_documents: "",
     has_progress_info: ""
   });
   const [selected, setSelected] = useState<StandardCouncilRecord | null>(null);
+
+  const duplicateKeys = useMemo(() => {
+    if (state.status !== "ready") return new Set<string>();
+    return getDuplicateCompositeKeys(state.records);
+  }, [state]);
 
   const derived = useMemo(() => {
     if (state.status !== "ready") return null;
@@ -51,6 +68,11 @@ export function CaseExplorerPage() {
       if (filters.decision && (r.decision ?? "") !== filters.decision) return false;
       if (filters.development_type && (r.development_type ?? "") !== filters.development_type)
         return false;
+      if (filters.portal_source && derivePortalSource(r.council) !== filters.portal_source) return false;
+      if (filters.data_quality_flag) {
+        const q = calculateDataQualityFlags(r).dataQualityFlag;
+        if (q !== filters.data_quality_flag) return false;
+      }
 
       if (filters.has_documents) {
         const want = filters.has_documents === "true";
@@ -77,6 +99,10 @@ export function CaseExplorerPage() {
   if (state.status === "loading") return <div className="p-6">Loading data…</div>;
   if (state.status === "error") return <div className="p-6 text-red-700">{state.error}</div>;
 
+  const modalEbt = selected
+    ? calculateEvidenceBasedTransparencyBreakdown(selected, duplicateKeys)
+    : null;
+
   return (
     <div className="space-y-5">
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -84,7 +110,7 @@ export function CaseExplorerPage() {
         <p className="mt-1 text-sm text-slate-600">
           Search and filter individual cases, then open a full record panel for detailed review.
         </p>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-6">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-8">
           <div className="md:col-span-2">
             <label className="text-xs font-medium text-slate-600">Search</label>
             <input
@@ -154,6 +180,37 @@ export function CaseExplorerPage() {
             </select>
           </div>
           <div>
+            <label className="text-xs font-medium text-slate-600">portal_source</label>
+            <select
+              className="mt-1 w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+              value={filters.portal_source}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, portal_source: e.target.value as Filters["portal_source"] }))
+              }
+            >
+              <option value="">All</option>
+              <option value="Council-managed portal">Council-managed portal</option>
+              <option value="NSW Planning Portal">NSW Planning Portal</option>
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-slate-600">data_quality_flag</label>
+            <select
+              className="mt-1 w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+              value={filters.data_quality_flag}
+              onChange={(e) =>
+                setFilters((f) => ({
+                  ...f,
+                  data_quality_flag: e.target.value as Filters["data_quality_flag"]
+                }))
+              }
+            >
+              <option value="">All</option>
+              <option value="OK">OK</option>
+              <option value="Review required">Review required</option>
+            </select>
+          </div>
+          <div>
             <label className="text-xs font-medium text-slate-600">has_progress_info</label>
             <select
               className="mt-1 w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
@@ -189,6 +246,10 @@ export function CaseExplorerPage() {
               <th className="p-3 font-semibold">Decision</th>
               <th className="p-3 font-semibold">Lodged</th>
               <th className="p-3 font-semibold">Decision date</th>
+              <th className="p-3 font-semibold">Portal source</th>
+              <th className="p-3 font-semibold">EBT score (0–100)</th>
+              <th className="p-3 font-semibold">Legacy weighted idx</th>
+              <th className="p-3 font-semibold">Data quality</th>
               <th className="p-3 font-semibold">Docs</th>
               <th className="p-3 font-semibold">Progress</th>
             </tr>
@@ -207,6 +268,16 @@ export function CaseExplorerPage() {
                 <td className="p-3">{r.decision ?? "—"}</td>
                 <td className="p-3">{r.lodged_date ?? "—"}</td>
                 <td className="p-3">{r.decision_date ?? "—"}</td>
+                <td className="p-3">{derivePortalSource(r.council)}</td>
+                <td className="p-3">
+                  {calculateEvidenceBasedTransparencyBreakdown(r, duplicateKeys).evidence_based_transparency_score.toFixed(
+                    1
+                  )}
+                </td>
+                <td className="p-3">
+                  {calculateWeightedTransparencyIndex(r)?.toFixed(2) ?? "—"}
+                </td>
+                <td className="p-3">{calculateDataQualityFlags(r).dataQualityFlag}</td>
                 <td className="p-3">{String(safeBool(r.has_documents))}</td>
                 <td className="p-3">{String(safeBool(r.has_progress_info))}</td>
               </tr>
@@ -220,7 +291,7 @@ export function CaseExplorerPage() {
         title={selected?.application_no ?? "Case Details"}
         onClose={() => setSelected(null)}
       >
-        {selected ? (
+        {selected && modalEbt ? (
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <div className="rounded-md border border-slate-200 p-3">
               <div className="text-xs font-semibold text-slate-600">Council</div>
@@ -263,6 +334,32 @@ export function CaseExplorerPage() {
               <div className="mt-1 text-sm">{String(safeBool(selected.has_progress_info))}</div>
             </div>
             <div className="rounded-md border border-slate-200 p-3">
+              <div className="text-xs font-semibold text-slate-600">portal_source</div>
+              <div className="mt-1 text-sm">{derivePortalSource(selected.council)}</div>
+            </div>
+            <div className="rounded-md border border-violet-200 bg-violet-50 p-3 md:col-span-2">
+              <div className="text-xs font-semibold text-slate-700">evidence_based_transparency_score (primary)</div>
+              <div className="mt-1 text-lg font-semibold text-slate-900">
+                {modalEbt.evidence_based_transparency_score.toFixed(2)}
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-600 md:grid-cols-4">
+                <div>Status vis.: {modalEbt.status_visibility_score.toFixed(1)}</div>
+                <div>Progress vis.: {modalEbt.progress_visibility_score.toFixed(1)}</div>
+                <div>Field completeness: {modalEbt.basic_information_completeness_score.toFixed(1)}</div>
+                <div>DQR: {modalEbt.data_quality_reliability_score.toFixed(1)}</div>
+              </div>
+            </div>
+            <div className="rounded-md border border-slate-200 p-3">
+              <div className="text-xs font-semibold text-slate-600">legacy weighted_transparency_index</div>
+              <div className="mt-1 text-sm">
+                {calculateWeightedTransparencyIndex(selected)?.toFixed(4) ?? "—"}
+              </div>
+            </div>
+            <div className="rounded-md border border-slate-200 p-3">
+              <div className="text-xs font-semibold text-slate-600">data_quality_flag</div>
+              <div className="mt-1 text-sm">{calculateDataQualityFlags(selected).dataQualityFlag}</div>
+            </div>
+            <div className="rounded-md border border-slate-200 p-3">
               <div className="text-xs font-semibold text-slate-600">status_clarity_score</div>
               <div className="mt-1 text-sm">{selected.status_clarity_score ?? "—"}</div>
             </div>
@@ -276,8 +373,10 @@ export function CaseExplorerPage() {
               <div className="text-xs font-semibold text-slate-600">update_visibility_score</div>
               <div className="mt-1 text-sm">{selected.update_visibility_score ?? "—"}</div>
             </div>
-            <div className="rounded-md border border-slate-200 p-3">
-              <div className="text-xs font-semibold text-slate-600">navigation_ease_score</div>
+            <div className="rounded-md border border-slate-200 p-3 md:col-span-2">
+              <div className="text-xs font-semibold text-slate-600">
+                navigation_ease_score (baseline usability field — constant 2 in current snapshot)
+              </div>
               <div className="mt-1 text-sm">{selected.navigation_ease_score ?? "—"}</div>
             </div>
             <div className="rounded-md border border-slate-200 p-3 md:col-span-2">
@@ -287,8 +386,11 @@ export function CaseExplorerPage() {
             <div className="rounded-md border border-sky-200 bg-sky-50 p-3 md:col-span-2">
               <div className="text-xs font-semibold text-slate-700">Transparency Scoring Reminder</div>
               <div className="mt-1 text-sm text-slate-700">
-                Transparency scores in this dashboard are rubric-based analytical indicators on a
-                0-2 scale.
+                The primary comparative metric is Evidence-Based Transparency Score (0–100), built from
+                checkable status/progress signals, core field completeness, and data-quality reliability.
+                Rubric scores use a 0–2 scale. Document-linked metrics are not used in EBT until verified
+                systematic capture is available. These indicators describe public-facing DA information
+                transparency, not council planning decision quality.
               </div>
             </div>
           </div>

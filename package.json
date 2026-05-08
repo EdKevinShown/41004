@@ -4,7 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "audit": "tsx src/audit/auditSchemas.ts"
+    "audit": "tsx src/audit/auditSchemas.ts",
+    "build:data": "tsx src/index.ts",
+    "ass3:outputs": "tsx src/ass3/generateAss3Outputs.ts",
+    "dev:dashboard": "npm --prefix frontend run dev",
+    "build:dashboard": "npm --prefix frontend run build"
   },
   "dependencies": {
     "csv-parse": "^5.6.0"

@@ -1,6 +1,13 @@
 import { StatCard } from "../components/StatCard";
 import { useRecords } from "../data/useRecords";
-import { bucketDecision, pct, safeBool } from "../lib/metrics";
+import {
+  bucketDecision,
+  calculateEvidenceBasedTransparencyScore,
+  calculateWeightedTransparencyIndex,
+  getDuplicateCompositeKeys,
+  pct,
+  safeBool
+} from "../lib/metrics";
 
 export function OverviewPage() {
   const { state } = useRecords();
@@ -18,6 +25,9 @@ export function OverviewPage() {
   let hasDocs = 0;
   let hasProgress = 0;
   let noDocsNoProgress = 0;
+  const weightedScores: number[] = [];
+  const duplicateKeys = getDuplicateCompositeKeys(records);
+  const ebtScores: number[] = [];
 
   for (const r of records) {
     const b = bucketDecision(r.decision);
@@ -28,7 +38,18 @@ export function OverviewPage() {
     if (safeBool(r.has_documents)) hasDocs++;
     if (safeBool(r.has_progress_info)) hasProgress++;
     if (!safeBool(r.has_documents) && !safeBool(r.has_progress_info)) noDocsNoProgress++;
+    const weighted = calculateWeightedTransparencyIndex(r);
+    if (weighted !== null) weightedScores.push(weighted);
+    ebtScores.push(calculateEvidenceBasedTransparencyScore(r, duplicateKeys));
   }
+  const avgWeighted =
+    weightedScores.length > 0
+      ? (weightedScores.reduce((a, b) => a + b, 0) / weightedScores.length).toFixed(2)
+      : "—";
+  const avgEbt =
+    ebtScores.length > 0
+      ? (ebtScores.reduce((a, b) => a + b, 0) / ebtScores.length).toFixed(1)
+      : "—";
 
   const findings: string[] = [
     `${pct(approved, total)} of applications are currently marked as Approved.`,
@@ -53,8 +74,22 @@ export function OverviewPage() {
         <h3 className="text-base font-semibold text-slate-900">Scoring Note</h3>
         <div className="mt-2 space-y-2 text-sm text-slate-700">
           <p>
-            Transparency-related scores in this dashboard use a <span className="font-semibold">0-2 scale</span>,
-            where higher values indicate stronger visibility, clarity, and ease of access.
+            The primary comparative indicator is the{" "}
+            <span className="font-semibold">Evidence-Based Transparency Score (0–100)</span>, combining
+            status visibility, progress visibility (tracking flag + update rubric), completeness of core
+            record fields, and data-quality reliability.{" "}
+            <span className="font-semibold">document_completeness_score</span> and{" "}
+            <span className="font-semibold">has_documents</span> are excluded from this primary score
+            until systematic verified document capture is available (see README).
+          </p>
+          <p>
+            <span className="font-semibold">navigation_ease_score</span> remains as a{" "}
+            <span className="font-semibold">baseline usability field</span> only: all records in the current
+            snapshot have navigation_ease_score = 2, so it does not differentiate councils here.
+          </p>
+          <p>
+            Rubric-backed scores continue to use a <span className="font-semibold">0-2 scale</span>,
+            where higher values indicate stronger visibility and clarity on public portals.
           </p>
           <p>
             Score meanings: <span className="font-semibold">0</span> = not visible/unavailable,{" "}
@@ -93,7 +128,7 @@ export function OverviewPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
         <StatCard
           label="Pending / In Progress / Under Assessment Cases"
           value={pendingInProgressUnder}
@@ -110,6 +145,16 @@ export function OverviewPage() {
           value={pct(hasProgress, total)}
           sub={`${hasProgress} of ${total} cases expose progress info`}
           hint="Based on has_progress_info boolean field"
+        />
+        <StatCard
+          label="Avg Evidence-Based Transparency Score"
+          value={avgEbt}
+          sub="Primary model (0–100): status 35%, progress 35%, completeness 20%, reliability 10%"
+        />
+        <StatCard
+          label="Legacy weighted index (reference)"
+          value={avgWeighted}
+          sub="Not primary; includes docs/navigation rubric weights — report uses EBT as main metric"
         />
       </div>
 
@@ -131,6 +176,15 @@ export function OverviewPage() {
           indicators are derived from visible portal evidence rather than native structured fields.
           Score differences can reflect both actual transparency differences and source presentation
           differences.
+        </p>
+        <p className="mt-2 text-sm text-slate-700">
+          Scores are comparative transparency indicators based on visible portal evidence. They do
+          not assess the quality of council planning decisions.
+        </p>
+        <p className="mt-2 text-sm text-slate-700">
+          Assignment 3 interpretation note: document linkage was not systematically captured in the
+          original collection; re-introducing documents into the primary score requires verified document
+          data rather than informal flags alone.
         </p>
       </section>
     </div>
