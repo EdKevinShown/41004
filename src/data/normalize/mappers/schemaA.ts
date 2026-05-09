@@ -7,6 +7,9 @@ import { parseYesNo } from "../boolean.js";
 import { compareIsoDates, parseToIsoDate } from "../date.js";
 import { normalizeDecision } from "../decision.js";
 
+/** Display / dataset short name (replaces long official council string from source CSV). */
+const HUNTERS_HILL_LONG_NAME = "The Council of the Municipality of Hunter's Hill";
+
 export interface AuditIssueBase {
   file: string;
   rowNumber: number; // 1-based in file, including header
@@ -44,7 +47,10 @@ export function mapSchemaARow(args: {
 }): StandardCouncilRecord {
   const { file, rowNumber, row, issues } = args;
 
-  const council = (row["council"] ?? "").trim() || null;
+  let council = (row["council"] ?? "").trim() || null;
+  if (council === HUNTERS_HILL_LONG_NAME) {
+    council = "hunter hills";
+  }
   const application_no = (row["application_no"] ?? "").trim() || null;
   const address = (row["address"] ?? "").trim() || null;
   const development_type = (row["development_type"] ?? "").trim() || null;

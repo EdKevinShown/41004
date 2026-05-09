@@ -66,6 +66,7 @@ export function ChartsPage() {
         avgEBT: avg(ebtBreakdowns.map((b) => b.evidence_based_transparency_score)) ?? null,
         avgStatusVisibility: avg(ebtBreakdowns.map((b) => b.status_visibility_score)) ?? null,
         avgProgressVisibility: avg(ebtBreakdowns.map((b) => b.progress_visibility_score)) ?? null,
+        avgDocumentVisibility: avg(ebtBreakdowns.map((b) => b.document_visibility_score)) ?? null,
         avgBasicCompleteness: avg(ebtBreakdowns.map((b) => b.basic_information_completeness_score)) ?? null,
         avgDataQualityReliability:
           avg(ebtBreakdowns.map((b) => b.data_quality_reliability_score)) ?? null,
@@ -125,15 +126,15 @@ export function ChartsPage() {
         <h3 className="text-base font-semibold text-slate-900">Scoring Note</h3>
         <div className="mt-2 space-y-2 text-sm text-slate-700">
           <p>
-            The <span className="font-semibold">Evidence-Based Transparency Score (EBT, 0–100)</span> is the
-            primary comparative indicator for Assignment 3 reporting. It combines objective visibility of
-            status and progress, completeness of core indexed fields, and data-quality reliability.
-            Document rubric fields are intentionally excluded from EBT until systematic verified document
-            capture is available.
+            The <span className="font-semibold">Evidence-Based Transparency with Documents (EBT-D, 0–100)</span>{" "}
+            is the primary comparative indicator. It combines status visibility, progress visibility, document
+            visibility (re-crawl <span className="font-semibold">has_documents</span> plus normalised{" "}
+            <span className="font-semibold">document_completeness_score</span>), core field completeness, and
+            data-quality reliability.
           </p>
           <p>
-            <span className="font-semibold">navigation_ease_score</span> is kept as a baseline usability field:
-            all records currently show 2, so it does not differentiate councils and is not part of EBT.
+            <span className="font-semibold">navigation_ease_score</span> feeds the legacy weighted rubric index
+            only; it is not a direct EBT-D component.
           </p>
           <p>
             Supporting rubric scores use a <span className="font-semibold">0-2 scale</span>,
@@ -224,9 +225,9 @@ export function ChartsPage() {
       </ChartCard>
 
       <ChartCard
-        title="Evidence-Based Transparency Score by Council"
-        subtitle="Primary model (0–100): status + progress + field completeness + data-quality reliability"
-        insight="Does not use document_completeness_score or has_documents."
+        title="EBT-D score by council"
+        subtitle="Primary model (0–100): status 25%, progress 25%, document 25%, completeness 15%, reliability 10%"
+        insight="Document leg uses has_documents (100/0) and document_completeness_score normalised to 0–100, each at half weight inside the document pillar."
       >
         <div className="h-[380px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -249,16 +250,16 @@ export function ChartsPage() {
                 }}
               />
               <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
-              <Bar dataKey="avgEBT" name="Avg EBT score" fill="#7c3aed" />
+              <Bar dataKey="avgEBT" name="Avg EBT-D score" fill="#7c3aed" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </ChartCard>
 
       <ChartCard
-        title="EBT component averages by council"
-        subtitle="Mean status visibility, progress visibility, field completeness, and data-quality reliability (each 0–100)"
-        insight="Grouped bars compare supporting averages behind council-level EBT."
+        title="EBT-D component averages by council"
+        subtitle="Mean pillar scores on 0–100 scale behind council-level EBT-D"
+        insight="Document pillar = average of per-record document_visibility_score (has_documents and document completeness blend)."
       >
         <div className="h-[380px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -283,6 +284,7 @@ export function ChartsPage() {
               <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
               <Bar dataKey="avgStatusVisibility" name="Avg status visibility" fill="#0ea5e9" />
               <Bar dataKey="avgProgressVisibility" name="Avg progress visibility" fill="#22c55e" />
+              <Bar dataKey="avgDocumentVisibility" name="Avg document visibility" fill="#a855f7" />
               <Bar dataKey="avgBasicCompleteness" name="Avg field completeness" fill="#f59e0b" />
               <Bar dataKey="avgDataQualityReliability" name="Avg DQR" fill="#64748b" />
             </BarChart>
@@ -438,7 +440,7 @@ export function ChartsPage() {
         <p className="mt-2 text-sm text-slate-700">
           For reference only: equal-weight, document-focused, and navigation-focused scenarios apply to the
           legacy weighted transparency index (which includes document and navigation rubric scores). The
-          primary Assignment 3 indicator is EBT (0–100).
+          primary Assignment 3 indicator is EBT-D (0–100).
         </p>
         <div className="mt-3 overflow-auto">
           <table className="min-w-[900px] w-full text-left text-sm">

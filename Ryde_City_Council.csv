@@ -1,21 +1,21 @@
 ﻿council,application_no,address,development_type,description,lodged_date,decision,decision_date,has_progress_info,has_documents,status_clarity_score,document_completeness_score,update_visibility_score,navigation_ease_score,notes
-Ryde City Council,CDC-101382,36 FARNELL STREET WEST RYDE 2114,Dwelling house,Modification to Complying Development Certificate,2022-07-20,Approved,2022-07-20,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101426,59 ABUKLEA ROAD MARSFIELD 2122,"Demolition,Attached development",Complying Development Certificate Application,2022-07-22,Approved,2022-11-28,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101476,18 AGINCOURT ROAD MARSFIELD 2122,Dwelling house,Complying Development Certificate Application,,Declined,,Yes,No,2,0,1,2,Data extracted via API
-Ryde City Council,CDC-101508,27 HOLLIS AVENUE DENISTONE EAST 2112,Demolition,Complying Development Certificate Application,2022-07-15,Approved,2022-07-15,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101555,6 HORDERN AVENUE PUTNEY 2112,Swimming pools,Modification to Complying Development Certificate,2022-07-18,Approved,2022-07-25,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101558,7-11 TALAVERA ROAD MACQUARIE PARK 2113,Alterations and additions to commercial development,Complying Development Certificate Application,2022-07-19,Approved,2022-07-19,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100645,6 CULGOA AVENUE EASTWOOD 2122,"Dual occupancy,Demolition,Garages, carports and car parking spaces,Earthworks, retaining walls, protection of trees",Complying Development Certificate Application,2022-07-12,Approved,2022-09-21,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100777,20 POTTS STREET RYDE 2112,Dwelling house,Complying Development Certificate Application,2022-10-04,Approved,2022-10-21,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100828,41 SWAN STREET GLADESVILLE 2111,Alterations and additions to residential development,Complying Development Certificate Application,2022-09-09,Approved,2022-09-09,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100837,4 CLANWILLIAM STREET EASTWOOD 2122,Dual occupancy,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
-Ryde City Council,CDC-100930,24 MOSS STREET WEST RYDE 2114,Subdivision of land,Complying Development Certificate Application,2022-07-15,Approved,2022-07-15,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100932,20 POTTS STREET RYDE 2112,Demolition,Complying Development Certificate Application,2022-07-13,Approved,2022-07-29,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100977,5 GRAND AVENUE WEST RYDE 2114,Dwelling house,Complying Development Certificate Application,2022-07-14,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
-Ryde City Council,CDC-100985,39 THRELFALL STREET EASTWOOD 2122,Dwelling house,Modification to Complying Development Certificate,2022-07-28,Approved,2022-08-02,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101010,4 TALAVERA ROAD MACQUARIE PARK 2113,Alterations and additions to commercial development,Complying Development Certificate Application,2022-07-14,Approved,2022-07-14,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101057,160 TENNYSON ROAD TENNYSON POINT 2111,"Dual occupancy,Swimming pools",Complying Development Certificate Application,2022-07-14,Approved,2022-08-02,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101059,65 CHAMPION ROAD TENNYSON POINT 2111,Dwelling house,Modification to Complying Development Certificate,2022-08-18,Approved,2022-08-18,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-101182,29 HARRISON AVENUE EASTWOOD 2122,Swimming pools,Complying Development Certificate Application,2022-07-14,Approved,2022-07-19,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100406,22 CROWLEY CRESCENT MELROSE PARK 2114,Swimming pools,Complying Development Certificate Application,2022-07-11,Approved,2023-02-08,Yes,No,2,0,2,2,Data extracted via API
-Ryde City Council,CDC-100421,41 SWAN STREET GLADESVILLE 2111,Alterations and additions to residential development,Complying Development Certificate Application,,Withdrawn,,Yes,No,2,0,1,2,Data extracted via API
+City of Ryde,LDA2022/0365 MOD,826 Victoria Road Ryde NSW 2112,Modification,S4.55(1A) modification to approved childcare centre involving internal and external alterations.,2026/5/9,approved,,Yes,yes,2,1,2,2,
+City of Ryde,2025/3086/01,2 Eden Park Drive Macquarie Park NSW 2113,Commercial Fitout,Internal modifications to existing office premises.,2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,260037,18 Jopling Street North Ryde NSW 2113,Residential Development,Demolition of existing dwelling and construction of two-storey dual occupancy with basement.,2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,2026/0178/1,7-11 Talavera Road Macquarie Park NSW 2113,Commercial Alteration,Internal alterations to existing office premises on level 5.,2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,CDC-25428/03,2 Milne Street Ryde NSW 2112,Residential Development,"Demolition of shed, additions to dwelling, secondary dwelling and swimming pool.",2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,SWC252213,304 Pittwater Road East Ryde NSW 2113,Pool / Recreation,"Construction of new swimming pool, terrace and cabana.",2026/5/9,approved,,Partial,no,1,0,1,2,
+City of Ryde,260030,70 Mons Avenue West Ryde NSW 2114,Secondary Dwelling,Construction of secondary dwelling.,2026/5/9,approved,,Yes,yes,2,1,2,2,
+City of Ryde,3226247CDC,116 Darvall Road Denistone West NSW 2114,Residential Alteration,Removal of internal wall to existing dwelling.,2026/5/9,approved,,Partial,no,1,0,1,2,
+City of Ryde,CDC26189_01,296 Rowe Street Eastwood NSW 2122,Subdivision,Two lot Torrens subdivision for dual occupancy (attached).,2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,CDC25-0316-2,94 Epping Road North Ryde NSW 2113,Residential Development,Demolition and construction of two-storey house with attached secondary dwelling.,2026/5/9,approved,,Yes,yes,2,2,2,2,
+City of Ryde,LDA2021/0274 MOD,2 Ida Street Putney NSW 2112,Modification,Modification to relocate on-site detention system underground.,2026/5/6,approved,,Yes,yes,2,2,2,2,
+City of Ryde,LDA2025/0255 MOD,131 Melba Drive East Ryde NSW 2113,Modification,Minor modification to development consent involving condition changes.,2026/5/6,approved,,Partial,no,1,0,1,2,
+City of Ryde,26000813/1,6 Giffnock Avenue Macquarie Park NSW 2113,Commercial Fitout,CDC PCA level 2 warm shell commercial works.,2026/5/6,approved,,Partial,no,1,0,1,2,
+City of Ryde,260011/01,10 Storey Street Putney NSW 2112,Dual Occupancy,Construction of attached dual occupancy and swimming pool modification.,2026/5/6,approved,,Yes,yes,2,2,2,2,
+City of Ryde,250301,25 Threlfall Street Eastwood NSW 2122,Subdivision,2 lot Torrens title subdivision under LRHDC.,2026/5/6,approved,,Yes,yes,2,2,2,2,
+City of Ryde,260028,19 Thompson Street Gladesville NSW 2111,Residential Alteration,Alterations and additions including pool and deck works.,2026/5/8,approved,,Yes,yes,2,2,2,2,
+City of Ryde,260026,98 Bellevue Avenue Denistone NSW 2114,Residential Alteration,"New carport, external stairs and retaining wall works.",2026/5/8,approved,,Partial,no,1,0,1,2,
+City of Ryde,260024,1 Railway Road Meadowbank NSW 2114,Signage,Installation of illuminated signage to mixed-use development.,2026/5/6,approved,,Partial,no,1,0,1,2,
+City of Ryde,260021,2 Porter Street Ryde NSW 2112,Mixed Use Alteration,External alterations and remedial works to existing mixed-use development.,2026/5/6,approved,,Yes,yes,2,2,2,2,
+City of Ryde,260018,2 Thelma Street Marsfield NSW 2122,Residential Development,Demolition and construction of split-level two-storey dwelling.,2026/5/6,approved,,Yes,yes,2,2,2,2,

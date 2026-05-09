@@ -7,15 +7,15 @@ import { mapNorthSydneyRow } from "../normalize/mappers/northSydney.js";
 export const COUNCIL_CSV_FILES = [
   "Burwood_Council.csv",
   "Campbelltown_City_Council.csv",
-  "City_of_Parramatta_Council.csv",
-  "Council_of_the_City_of_Sydney.csv",
+  "city of parramatta.csv",
+  "city of sydney.csv",
   "Georges River.csv",
-  "Inner_West_Council.csv",
+  "inner_west_council.csv",
   "Liverpool_City_Council.csv",
   "North Sydney.csv",
   "Ryde_City_Council.csv",
   "Sutherland Shire.csv",
-  "The_Council_of_the_Municipality_of_Hunters_Hill.csv",
+  "Hunters_Hill.csv",
   "Willoughby_City_Council.csv"
 ] as const;
 

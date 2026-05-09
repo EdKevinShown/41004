@@ -1,0 +1,98 @@
+[
+  {
+    "council": "Burwood Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.35,
+    "equal_weight": 1.375,
+    "document_focused": 1.4,
+    "navigation_focused": 1.425
+  },
+  {
+    "council": "Campbelltown City Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.2875,
+    "equal_weight": 1.2375,
+    "document_focused": 1.38,
+    "navigation_focused": 1.2325
+  },
+  {
+    "council": "City of Parramatta Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.42,
+    "equal_weight": 1.4375,
+    "document_focused": 1.48,
+    "navigation_focused": 1.4875
+  },
+  {
+    "council": "City of Ryde",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.64,
+    "equal_weight": 1.675,
+    "document_focused": 1.6,
+    "navigation_focused": 1.69
+  },
+  {
+    "council": "City of Sydney",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.7,
+    "equal_weight": 1.725,
+    "document_focused": 1.68,
+    "navigation_focused": 1.7325
+  },
+  {
+    "council": "Georges River",
+    "portal_source": "Council-managed portal",
+    "weighted_default": 1.285,
+    "equal_weight": 1.35,
+    "document_focused": 1.22,
+    "navigation_focused": 1.41
+  },
+  {
+    "council": "hunter hills",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.6325,
+    "equal_weight": 1.6625,
+    "document_focused": 1.61,
+    "navigation_focused": 1.6875
+  },
+  {
+    "council": "Inner West Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.695,
+    "equal_weight": 1.7125,
+    "document_focused": 1.7,
+    "navigation_focused": 1.725
+  },
+  {
+    "council": "Liverpool City Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.555,
+    "equal_weight": 1.5875,
+    "document_focused": 1.54,
+    "navigation_focused": 1.6375
+  },
+  {
+    "council": "North Sydney",
+    "portal_source": "Council-managed portal",
+    "weighted_default": 1.63,
+    "equal_weight": 1.6625,
+    "document_focused": 1.6,
+    "navigation_focused": 1.6925
+  },
+  {
+    "council": "Sutherland Shire",
+    "portal_source": "Council-managed portal",
+    "weighted_default": 1.1625,
+    "equal_weight": 1.2125,
+    "document_focused": 1.17,
+    "navigation_focused": 1.3125
+  },
+  {
+    "council": "Willoughby City Council",
+    "portal_source": "NSW Planning Portal",
+    "weighted_default": 1.68,
+    "equal_weight": 1.7125,
+    "document_focused": 1.64,
+    "navigation_focused": 1.725
+  }
+]

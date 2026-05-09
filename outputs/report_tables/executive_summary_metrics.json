@@ -1,0 +1,20 @@
+{
+  "total_records": 240,
+  "total_councils": 12,
+  "overall_document_availability_rate": 0.8208,
+  "overall_progress_visibility_rate": 0.6958,
+  "overall_avg_weighted_transparency_index": 1.5031,
+  "overall_avg_evidence_based_transparency_score": 77.4867,
+  "best_evidence_based_transparency_council": "City of Sydney",
+  "lowest_evidence_based_transparency_council": "Georges River",
+  "best_document_availability_council": "Campbelltown City Council",
+  "lowest_document_availability_council": "Georges River",
+  "highest_progress_visibility_council": "City of Parramatta Council",
+  "lowest_progress_visibility_council": "Sutherland Shire",
+  "key_interpretation_notes": [
+    "Primary comparative metric is Evidence-Based Transparency with Documents (EBT-D, 0–100): status, progress, document visibility, field completeness, and data-quality reliability.",
+    "Scores are comparative transparency indicators based on visible portal evidence.",
+    "These indicators do not assess the quality of council planning decisions.",
+    "Legacy weighted transparency index (0–2 rubric mix incl. documents/navigation) is retained for reference only."
+  ]
+}

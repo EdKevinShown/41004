@@ -1,0 +1,3 @@
+portal_source,total_records,council_count,document_availability_rate,progress_visibility_rate,avg_status_clarity,avg_document_completeness,avg_update_visibility,avg_navigation_ease,avg_weighted_transparency_index,avg_evidence_based_transparency_score,date_anomaly_count
+Council-managed portal,60,3,0.6833,0.3667,1.8833,1.0167,0.7333,2,1.3592,71.5162,19
+NSW Planning Portal,180,9,0.8667,0.8056,1.4778,1.5167,1.4,1.8833,1.5511,79.4768,149

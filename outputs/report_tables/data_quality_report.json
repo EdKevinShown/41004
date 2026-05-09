@@ -1,0 +1,14 @@
+[
+  {
+    "total_records": 240,
+    "total_councils": 12,
+    "missing_required_fields_total": 30,
+    "records_with_missing_required_fields": 30,
+    "score_out_of_range_count": 0,
+    "date_anomaly_count": 168,
+    "duplicate_key_count": 0,
+    "boolean_parse_issue_count": 0,
+    "records_requiring_review": 188,
+    "data_quality_notes": "Review required indicates missing required fields, score out-of-range, date anomaly, or boolean parse issue."
+  }
+]

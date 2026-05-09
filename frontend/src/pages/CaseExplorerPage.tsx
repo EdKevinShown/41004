@@ -247,7 +247,7 @@ export function CaseExplorerPage() {
               <th className="p-3 font-semibold">Lodged</th>
               <th className="p-3 font-semibold">Decision date</th>
               <th className="p-3 font-semibold">Portal source</th>
-              <th className="p-3 font-semibold">EBT score (0–100)</th>
+              <th className="p-3 font-semibold">EBT-D (0–100)</th>
               <th className="p-3 font-semibold">Legacy weighted idx</th>
               <th className="p-3 font-semibold">Data quality</th>
               <th className="p-3 font-semibold">Docs</th>
@@ -338,13 +338,16 @@ export function CaseExplorerPage() {
               <div className="mt-1 text-sm">{derivePortalSource(selected.council)}</div>
             </div>
             <div className="rounded-md border border-violet-200 bg-violet-50 p-3 md:col-span-2">
-              <div className="text-xs font-semibold text-slate-700">evidence_based_transparency_score (primary)</div>
+              <div className="text-xs font-semibold text-slate-700">
+                evidence_based_transparency_score (EBT-D, primary)
+              </div>
               <div className="mt-1 text-lg font-semibold text-slate-900">
                 {modalEbt.evidence_based_transparency_score.toFixed(2)}
               </div>
-              <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-600 md:grid-cols-4">
+              <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-600 md:grid-cols-5">
                 <div>Status vis.: {modalEbt.status_visibility_score.toFixed(1)}</div>
                 <div>Progress vis.: {modalEbt.progress_visibility_score.toFixed(1)}</div>
+                <div>Document vis.: {modalEbt.document_visibility_score.toFixed(1)}</div>
                 <div>Field completeness: {modalEbt.basic_information_completeness_score.toFixed(1)}</div>
                 <div>DQR: {modalEbt.data_quality_reliability_score.toFixed(1)}</div>
               </div>
@@ -375,7 +378,7 @@ export function CaseExplorerPage() {
             </div>
             <div className="rounded-md border border-slate-200 p-3 md:col-span-2">
               <div className="text-xs font-semibold text-slate-600">
-                navigation_ease_score (baseline usability field — constant 2 in current snapshot)
+                navigation_ease_score (legacy weighted index rubric only)
               </div>
               <div className="mt-1 text-sm">{selected.navigation_ease_score ?? "—"}</div>
             </div>
@@ -386,11 +389,10 @@ export function CaseExplorerPage() {
             <div className="rounded-md border border-sky-200 bg-sky-50 p-3 md:col-span-2">
               <div className="text-xs font-semibold text-slate-700">Transparency Scoring Reminder</div>
               <div className="mt-1 text-sm text-slate-700">
-                The primary comparative metric is Evidence-Based Transparency Score (0–100), built from
-                checkable status/progress signals, core field completeness, and data-quality reliability.
-                Rubric scores use a 0–2 scale. Document-linked metrics are not used in EBT until verified
-                systematic capture is available. These indicators describe public-facing DA information
-                transparency, not council planning decision quality.
+                The primary comparative metric is EBT-D (0–100): status, progress, document visibility
+                (has_documents plus document completeness rubric), core field completeness, and
+                data-quality reliability. Rubric scores use a 0–2 scale where applicable. These indicators
+                describe public-facing DA information transparency, not council planning decision quality.
               </div>
             </div>
           </div>

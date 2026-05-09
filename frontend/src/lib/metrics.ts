@@ -172,16 +172,18 @@ export function getDuplicateCompositeKeys(records: StandardCouncilRecord[]): Set
 export interface EvidenceBasedTransparencyBreakdown {
   status_visibility_score: number;
   progress_visibility_score: number;
+  document_visibility_score: number;
   basic_information_completeness_score: number;
   data_quality_reliability_score: number;
+  /** EBT-D (0–100): document-inclusive primary transparency composite. */
   evidence_based_transparency_score: number;
   date_anomaly_flag: boolean;
   duplicate_key_flag: boolean;
 }
 
 /**
- * Evidence-Based Transparency Score (0–100). Primary dashboard model.
- * Does not use document_completeness_score or has_documents (see README).
+ * Evidence-Based Transparency with Documents (EBT-D, 0–100). Primary dashboard model.
+ * Document visibility = has_documents_score×0.5 + normalised document_completeness×0.5.
  */
 export function calculateEvidenceBasedTransparencyBreakdown(
   r: StandardCouncilRecord,
@@ -200,6 +202,14 @@ export function calculateEvidenceBasedTransparencyBreakdown(
 
   const progress_visibility_score =
     has_progress_info_score * 0.5 + update_visibility_score_normalised * 0.5;
+
+  const hasDocsParsed = parseBooleanLoose(r.has_documents);
+  const has_documents_score = hasDocsParsed.value === true ? 100 : 0;
+  const docRaw = r.document_completeness_score;
+  const document_completeness_score_normalised =
+    typeof docRaw === "number" && Number.isFinite(docRaw) ? (docRaw / 2) * 100 : 0;
+  const document_visibility_score =
+    has_documents_score * 0.5 + document_completeness_score_normalised * 0.5;
 
   const required: Array<keyof StandardCouncilRecord> = [
     "council",
@@ -242,9 +252,10 @@ export function calculateEvidenceBasedTransparencyBreakdown(
 
   const evidence_based_transparency_score = Number(
     (
-      status_visibility_score * 0.35 +
-      progress_visibility_score * 0.35 +
-      basic_information_completeness_score * 0.2 +
+      status_visibility_score * 0.25 +
+      progress_visibility_score * 0.25 +
+      document_visibility_score * 0.25 +
+      basic_information_completeness_score * 0.15 +
       data_quality_reliability_score * 0.1
     ).toFixed(2)
   );
@@ -252,6 +263,7 @@ export function calculateEvidenceBasedTransparencyBreakdown(
   return {
     status_visibility_score: Number(status_visibility_score.toFixed(2)),
     progress_visibility_score: Number(progress_visibility_score.toFixed(2)),
+    document_visibility_score: Number(document_visibility_score.toFixed(2)),
     basic_information_completeness_score: Number(basic_information_completeness_score.toFixed(2)),
     data_quality_reliability_score: Number(data_quality_reliability_score.toFixed(2)),
     evidence_based_transparency_score,

@@ -1,0 +1,30 @@
+[
+  {
+    "portal_source": "Council-managed portal",
+    "total_records": 60,
+    "council_count": 3,
+    "document_availability_rate": 0.6833,
+    "progress_visibility_rate": 0.3667,
+    "avg_status_clarity": 1.8833,
+    "avg_document_completeness": 1.0167,
+    "avg_update_visibility": 0.7333,
+    "avg_navigation_ease": 2,
+    "avg_weighted_transparency_index": 1.3592,
+    "avg_evidence_based_transparency_score": 71.5162,
+    "date_anomaly_count": 19
+  },
+  {
+    "portal_source": "NSW Planning Portal",
+    "total_records": 180,
+    "council_count": 9,
+    "document_availability_rate": 0.8667,
+    "progress_visibility_rate": 0.8056,
+    "avg_status_clarity": 1.4778,
+    "avg_document_completeness": 1.5167,
+    "avg_update_visibility": 1.4,
+    "avg_navigation_ease": 1.8833,
+    "avg_weighted_transparency_index": 1.5511,
+    "avg_evidence_based_transparency_score": 79.4768,
+    "date_anomaly_count": 149
+  }
+]

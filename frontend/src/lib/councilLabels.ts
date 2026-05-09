@@ -9,7 +9,11 @@ export const COUNCIL_LABELS: Record<string, string> = {
   "North Sydney": "North Sydney",
   Ryde_City_Council: "Ryde",
   "Sutherland Shire": "Sutherland",
-  The_Council_of_the_Municipality_of_Hunters_Hill: "Hunters Hill",
+  /** Matches normalized `council` from pipeline */
+  "hunter hills": "hunter hills",
+  "The Council of the Municipality of Hunter's Hill": "hunter hills",
+  The_Council_of_the_Municipality_of_Hunters_Hill: "hunter hills",
+  "The_Council_of_the_Municipality_of_Hunter's_Hill": "hunter hills",
   Willoughby_City_Council: "Willoughby"
 };
 

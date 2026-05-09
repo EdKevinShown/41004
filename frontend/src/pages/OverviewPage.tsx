@@ -74,18 +74,16 @@ export function OverviewPage() {
         <h3 className="text-base font-semibold text-slate-900">Scoring Note</h3>
         <div className="mt-2 space-y-2 text-sm text-slate-700">
           <p>
-            The primary comparative indicator is the{" "}
-            <span className="font-semibold">Evidence-Based Transparency Score (0–100)</span>, combining
-            status visibility, progress visibility (tracking flag + update rubric), completeness of core
-            record fields, and data-quality reliability.{" "}
-            <span className="font-semibold">document_completeness_score</span> and{" "}
-            <span className="font-semibold">has_documents</span> are excluded from this primary score
-            until systematic verified document capture is available (see README).
+            The primary comparative indicator is{" "}
+            <span className="font-semibold">Evidence-Based Transparency with Documents (EBT-D, 0–100)</span>,
+            combining status visibility (25%), progress visibility (25%), document visibility (25%),
+            completeness of core record fields (15%), and data-quality reliability (10%). Document
+            visibility blends re-crawled <span className="font-semibold">has_documents</span> with normalised{" "}
+            <span className="font-semibold">document_completeness_score</span> (see README).
           </p>
           <p>
-            <span className="font-semibold">navigation_ease_score</span> remains as a{" "}
-            <span className="font-semibold">baseline usability field</span> only: all records in the current
-            snapshot have navigation_ease_score = 2, so it does not differentiate councils here.
+            <span className="font-semibold">navigation_ease_score</span> is used in the legacy weighted index
+            only; it is not a direct EBT-D pillar.
           </p>
           <p>
             Rubric-backed scores continue to use a <span className="font-semibold">0-2 scale</span>,
@@ -147,14 +145,14 @@ export function OverviewPage() {
           hint="Based on has_progress_info boolean field"
         />
         <StatCard
-          label="Avg Evidence-Based Transparency Score"
+          label="Avg EBT-D score"
           value={avgEbt}
-          sub="Primary model (0–100): status 35%, progress 35%, completeness 20%, reliability 10%"
+          sub="Primary (0–100): status 25%, progress 25%, document 25%, completeness 15%, reliability 10%"
         />
         <StatCard
           label="Legacy weighted index (reference)"
           value={avgWeighted}
-          sub="Not primary; includes docs/navigation rubric weights — report uses EBT as main metric"
+          sub="Not primary; rubric mix incl. navigation — headline metric is EBT-D"
         />
       </div>
 
@@ -182,9 +180,8 @@ export function OverviewPage() {
           not assess the quality of council planning decisions.
         </p>
         <p className="mt-2 text-sm text-slate-700">
-          Assignment 3 interpretation note: document linkage was not systematically captured in the
-          original collection; re-introducing documents into the primary score requires verified document
-          data rather than informal flags alone.
+          Document visibility in EBT-D uses verified re-crawl results for <span className="font-semibold">has_documents</span>{" "}
+          together with the document completeness rubric field.
         </p>
       </section>
     </div>

@@ -1,0 +1,2 @@
+total_records,total_councils,missing_required_fields_total,records_with_missing_required_fields,score_out_of_range_count,date_anomaly_count,duplicate_key_count,boolean_parse_issue_count,records_requiring_review,data_quality_notes
+240,12,30,30,0,168,0,0,188,"Review required indicates missing required fields, score out-of-range, date anomaly, or boolean parse issue."

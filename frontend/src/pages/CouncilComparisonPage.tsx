@@ -41,6 +41,7 @@ type CouncilRow = {
   avgEvidenceBasedTransparencyScore: number | null;
   avgStatusVisibilityScore: number | null;
   avgProgressVisibilityScore: number | null;
+  avgDocumentVisibilityScore: number | null;
   avgBasicInformationCompletenessScore: number | null;
   avgDataQualityReliabilityScore: number | null;
   dateAnomalyCount: number;
@@ -75,6 +76,7 @@ export function CouncilComparisonPage() {
       );
       const avgStatusVisibilityScore = avg(ebtBreakdowns.map((b) => b.status_visibility_score));
       const avgProgressVisibilityScore = avg(ebtBreakdowns.map((b) => b.progress_visibility_score));
+      const avgDocumentVisibilityScore = avg(ebtBreakdowns.map((b) => b.document_visibility_score));
       const avgBasicInformationCompletenessScore = avg(
         ebtBreakdowns.map((b) => b.basic_information_completeness_score)
       );
@@ -101,6 +103,7 @@ export function CouncilComparisonPage() {
         avgEvidenceBasedTransparencyScore,
         avgStatusVisibilityScore,
         avgProgressVisibilityScore,
+        avgDocumentVisibilityScore,
         avgBasicInformationCompletenessScore,
         avgDataQualityReliabilityScore,
         dateAnomalyCount,
@@ -175,7 +178,7 @@ export function CouncilComparisonPage() {
               }
             >
               <option value="cases">Case count</option>
-              <option value="ebt">Avg evidence-based transparency score</option>
+              <option value="ebt">Avg EBT-D score</option>
               <option value="legacyTransparency">Legacy avg transparency (0–2)</option>
             </select>
           </div>
@@ -190,7 +193,7 @@ export function CouncilComparisonPage() {
                   <div className="text-sm font-semibold text-slate-900">{r.cases}</div>
                 </div>
                 <div>
-                  <div className="uppercase tracking-wide text-slate-500">Avg EBT score</div>
+                  <div className="uppercase tracking-wide text-slate-500">Avg EBT-D</div>
                   <div className="text-sm font-semibold text-slate-900">
                     {r.avgEvidenceBasedTransparencyScore?.toFixed(1) ?? "—"}
                   </div>
@@ -278,8 +281,8 @@ export function CouncilComparisonPage() {
       </ChartCard>
 
       <ChartCard
-        title="Evidence-Based Transparency Score by council"
-        subtitle="Primary model (0–100): status + progress + field completeness + data-quality reliability"
+        title="EBT-D score by council"
+        subtitle="Primary model (0–100): status, progress, document visibility, field completeness, DQR"
       >
         <div className="h-[360px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -302,7 +305,7 @@ export function CouncilComparisonPage() {
                 }}
               />
               <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
-              <Bar dataKey="ebt" name="Avg EBT score" fill="#7c3aed" />
+              <Bar dataKey="ebt" name="Avg EBT-D score" fill="#7c3aed" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -352,9 +355,10 @@ export function CouncilComparisonPage() {
               <th className="p-3 font-semibold">Avg doc completeness</th>
               <th className="p-3 font-semibold">Avg update visibility</th>
               <th className="p-3 font-semibold">Avg navigation ease</th>
-              <th className="p-3 font-semibold">Avg EBT (0–100)</th>
+              <th className="p-3 font-semibold">Avg EBT-D (0–100)</th>
               <th className="p-3 font-semibold">Avg status vis.</th>
               <th className="p-3 font-semibold">Avg progress vis.</th>
+              <th className="p-3 font-semibold">Avg document vis.</th>
               <th className="p-3 font-semibold">Avg field completeness</th>
               <th className="p-3 font-semibold">Avg DQR</th>
               <th className="p-3 font-semibold">Legacy weighted index</th>
@@ -380,6 +384,7 @@ export function CouncilComparisonPage() {
                 <td className="p-3">{r.avgEvidenceBasedTransparencyScore?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgStatusVisibilityScore?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgProgressVisibilityScore?.toFixed(2) ?? "—"}</td>
+                <td className="p-3">{r.avgDocumentVisibilityScore?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgBasicInformationCompletenessScore?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgDataQualityReliabilityScore?.toFixed(2) ?? "—"}</td>
                 <td className="p-3">{r.avgWeightedTransparencyIndex?.toFixed(2) ?? "—"}</td>

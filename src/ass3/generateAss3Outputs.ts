@@ -23,6 +23,7 @@ interface Ass3Record extends StandardCouncilRecord {
   duplicate_key_flag: boolean;
   status_visibility_score: number;
   progress_visibility_score: number;
+  document_visibility_score: number;
   basic_information_completeness_score: number;
   data_quality_reliability_score: number;
   evidence_based_transparency_score: number;
@@ -143,7 +144,7 @@ function getDuplicateCompositeKeys(records: StandardCouncilRecord[]): Set<string
   return dup;
 }
 
-/** Evidence-Based Transparency Score (0–100); aligns with dashboard `metrics.ts` logic. */
+/** EBT-D (0–100); aligns with dashboard `metrics.ts` logic. */
 function computeEvidenceBasedTransparency(args: {
   record: StandardCouncilRecord;
   duplicateKeys: Set<string>;
@@ -153,6 +154,7 @@ function computeEvidenceBasedTransparency(args: {
 }): {
   status_visibility_score: number;
   progress_visibility_score: number;
+  document_visibility_score: number;
   basic_information_completeness_score: number;
   data_quality_reliability_score: number;
   evidence_based_transparency_score: number;
@@ -175,6 +177,14 @@ function computeEvidenceBasedTransparency(args: {
   const progress_visibility_score =
     has_progress_info_score * 0.5 + update_visibility_score_normalised * 0.5;
 
+  const hd = parseBooleanLoose(r.has_documents);
+  const has_documents_score = hd.value === true ? 100 : 0;
+  const docRaw = r.document_completeness_score;
+  const document_completeness_score_normalised =
+    typeof docRaw === "number" && Number.isFinite(docRaw) ? (docRaw / 2) * 100 : 0;
+  const document_visibility_score =
+    has_documents_score * 0.5 + document_completeness_score_normalised * 0.5;
+
   const filled = REQUIRED_FIELDS.length - missingRequiredFieldsCount;
   const basic_information_completeness_score =
     (filled / REQUIRED_FIELDS.length) * 100;
@@ -190,9 +200,10 @@ function computeEvidenceBasedTransparency(args: {
 
   const evidence_based_transparency_score = Number(
     (
-      status_visibility_score * 0.35 +
-      progress_visibility_score * 0.35 +
-      basic_information_completeness_score * 0.2 +
+      status_visibility_score * 0.25 +
+      progress_visibility_score * 0.25 +
+      document_visibility_score * 0.25 +
+      basic_information_completeness_score * 0.15 +
       data_quality_reliability_score * 0.1
     ).toFixed(2)
   );
@@ -200,6 +211,7 @@ function computeEvidenceBasedTransparency(args: {
   return {
     status_visibility_score: Number(status_visibility_score.toFixed(2)),
     progress_visibility_score: Number(progress_visibility_score.toFixed(2)),
+    document_visibility_score: Number(document_visibility_score.toFixed(2)),
     basic_information_completeness_score: Number(basic_information_completeness_score.toFixed(2)),
     data_quality_reliability_score: Number(data_quality_reliability_score.toFixed(2)),
     evidence_based_transparency_score,
@@ -289,6 +301,7 @@ async function run(): Promise<void> {
       duplicate_key_flag: ebt.duplicate_key_flag,
       status_visibility_score: ebt.status_visibility_score,
       progress_visibility_score: ebt.progress_visibility_score,
+      document_visibility_score: ebt.document_visibility_score,
       basic_information_completeness_score: ebt.basic_information_completeness_score,
       data_quality_reliability_score: ebt.data_quality_reliability_score,
       evidence_based_transparency_score: ebt.evidence_based_transparency_score
@@ -324,6 +337,7 @@ async function run(): Promise<void> {
         ),
         avg_status_visibility_score: toFixedOrNull(avg(rows.map((r) => r.status_visibility_score))),
         avg_progress_visibility_score: toFixedOrNull(avg(rows.map((r) => r.progress_visibility_score))),
+        avg_document_visibility_score: toFixedOrNull(avg(rows.map((r) => r.document_visibility_score))),
         avg_basic_information_completeness_score: toFixedOrNull(
           avg(rows.map((r) => r.basic_information_completeness_score))
         ),
@@ -445,7 +459,7 @@ async function run(): Promise<void> {
     highest_progress_visibility_council: highProg?.council ?? null,
     lowest_progress_visibility_council: lowProg?.council ?? null,
     key_interpretation_notes: [
-      "Primary comparative metric is Evidence-Based Transparency Score (0–100): status, progress, field completeness, and data-quality reliability.",
+      "Primary comparative metric is Evidence-Based Transparency with Documents (EBT-D, 0–100): status, progress, document visibility, field completeness, and data-quality reliability.",
       "Scores are comparative transparency indicators based on visible portal evidence.",
       "These indicators do not assess the quality of council planning decisions.",
       "Legacy weighted transparency index (0–2 rubric mix incl. documents/navigation) is retained for reference only."
@@ -453,27 +467,29 @@ async function run(): Promise<void> {
   };
 
   const explanation = {
+    model_name_primary: "Evidence-Based Transparency with Documents (EBT-D)",
     evidence_based_transparency_score: {
       scale: "0-100",
+      model: "EBT-D",
       interpretation_boundary:
         "Comparative public-facing DA information transparency indicator only; not an official council rating.",
       formula:
-        "status_visibility*0.35 + progress_visibility*0.35 + basic_information_completeness*0.20 + data_quality_reliability*0.10",
+        "status_visibility*0.25 + progress_visibility*0.25 + document_visibility*0.25 + basic_information_completeness*0.15 + data_quality_reliability*0.10",
       components: {
         status_visibility_score: "(status_clarity_score / 2) * 100",
         progress_visibility_score:
           "has_progress_info_score*0.5 + (update_visibility_score/2*100)*0.5; has_progress true=100 else 0; null=0",
+        document_visibility_score:
+          "has_documents_score*0.5 + (document_completeness_score/2*100)*0.5; has_documents true=100 else 0; null=0",
         basic_information_completeness_score:
           "(non-missing required fields / 7) * 100 for council, application_no, address, development_type, description, lodged_date, decision",
         data_quality_reliability_score:
           "Start 100; -30 date anomaly; -20 any missing required field; -30 score out of range (0–2 rubric fields); -30 duplicate composite key; min 0"
       },
-      exclusions:
-        "document_completeness_score and has_documents are excluded from this primary score until verified systematic document capture is available.",
       navigation_ease_note:
-        "navigation_ease_score is retained as a baseline usability field only (current snapshot is constant at 2 across records)."
+        "navigation_ease_score is retained in the dataset for legacy weighted index and rubric views; it is not a direct EBT-D component."
     },
-    model_name: "Rule-based multi-criteria transparency index",
+    model_name: "Rule-based multi-criteria transparency index (EBT-D primary; legacy weighted index for sensitivity)",
     interpretation_boundary:
       "Comparative transparency indicator only; not an official council rating and not a planning decision quality assessment.",
     default_weights: {

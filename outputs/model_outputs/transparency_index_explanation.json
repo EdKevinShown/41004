@@ -1,0 +1,46 @@
+{
+  "model_name_primary": "Evidence-Based Transparency with Documents (EBT-D)",
+  "evidence_based_transparency_score": {
+    "scale": "0-100",
+    "model": "EBT-D",
+    "interpretation_boundary": "Comparative public-facing DA information transparency indicator only; not an official council rating.",
+    "formula": "status_visibility*0.25 + progress_visibility*0.25 + document_visibility*0.25 + basic_information_completeness*0.15 + data_quality_reliability*0.10",
+    "components": {
+      "status_visibility_score": "(status_clarity_score / 2) * 100",
+      "progress_visibility_score": "has_progress_info_score*0.5 + (update_visibility_score/2*100)*0.5; has_progress true=100 else 0; null=0",
+      "document_visibility_score": "has_documents_score*0.5 + (document_completeness_score/2*100)*0.5; has_documents true=100 else 0; null=0",
+      "basic_information_completeness_score": "(non-missing required fields / 7) * 100 for council, application_no, address, development_type, description, lodged_date, decision",
+      "data_quality_reliability_score": "Start 100; -30 date anomaly; -20 any missing required field; -30 score out of range (0–2 rubric fields); -30 duplicate composite key; min 0"
+    },
+    "navigation_ease_note": "navigation_ease_score is retained in the dataset for legacy weighted index and rubric views; it is not a direct EBT-D component."
+  },
+  "model_name": "Rule-based multi-criteria transparency index (EBT-D primary; legacy weighted index for sensitivity)",
+  "interpretation_boundary": "Comparative transparency indicator only; not an official council rating and not a planning decision quality assessment.",
+  "default_weights": {
+    "status_clarity_score": 0.25,
+    "document_completeness_score": 0.3,
+    "update_visibility_score": 0.25,
+    "navigation_ease_score": 0.2
+  },
+  "rationale": "document_completeness_score has a slightly higher weight because supporting documents are critical for public transparency and evidence verification.",
+  "sensitivity_scenarios": {
+    "equal_weight": {
+      "status_clarity_score": 0.25,
+      "document_completeness_score": 0.25,
+      "update_visibility_score": 0.25,
+      "navigation_ease_score": 0.25
+    },
+    "document_focused": {
+      "status_clarity_score": 0.2,
+      "document_completeness_score": 0.4,
+      "update_visibility_score": 0.2,
+      "navigation_ease_score": 0.2
+    },
+    "navigation_focused": {
+      "status_clarity_score": 0.25,
+      "document_completeness_score": 0.25,
+      "update_visibility_score": 0.2,
+      "navigation_ease_score": 0.3
+    }
+  }
+}

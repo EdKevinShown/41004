@@ -10,17 +10,19 @@ The dashboard and outputs are intended for comparative analysis in Assignment 3,
 - 240 records total
 
 ## Raw Data Files
+Filenames on disk (do not edit these in the pipeline; they are source inputs):
+
 - `Burwood_Council.csv`
 - `Campbelltown_City_Council.csv`
-- `City_of_Parramatta_Council.csv`
-- `Council_of_the_City_of_Sydney.csv`
+- `city of parramatta.csv`
+- `city of sydney.csv`
 - `Georges River.csv`
-- `Inner_West_Council.csv`
+- `inner_west_council.csv`
 - `Liverpool_City_Council.csv`
 - `North Sydney.csv`
 - `Ryde_City_Council.csv`
 - `Sutherland Shire.csv`
-- `The_Council_of_the_Municipality_of_Hunters_Hill.csv`
+- `Hunters_Hill.csv`
 - `Willoughby_City_Council.csv`
 
 ## Standardised Dataset and Single Source of Truth
@@ -48,36 +50,37 @@ The dashboard and outputs are intended for comparative analysis in Assignment 3,
 ## Preprocessing Pipeline
 - Multi-file loading and schema mapping in `src/data/load` and `src/data/normalize`
 - Date standardization to `YYYY-MM-DD`
-- Boolean normalization from source values
+- Boolean normalization from source values (including `yes` / `no` for booleans)
 - Decision harmonization (minimal)
 - Audit output generated as `audit-report.json`
 - Frontend data sync handled by `src/syncFrontendData.ts`
 
 ## Assignment 3 Modelling Approach
 
-### Primary model: Evidence-Based Transparency Score (EBT, 0–100)
-Rule-based, objective-led composite for **public-facing DA information transparency** (not official council rating; not planning decision quality).
+### Primary model: Evidence-Based Transparency with Documents (EBT-D, 0–100)
+Rule-based composite for **public-facing DA information transparency** (not official council rating; not planning decision quality).
 
-**Formula**
+**Top-level weights**
 
-    EBT =
-      StatusVisibility × 0.35
-    + ProgressVisibility × 0.35
-    + BasicInformationCompleteness × 0.20
+    EBT-D =
+      StatusVisibility × 0.25
+    + ProgressVisibility × 0.25
+    + DocumentVisibility × 0.25
+    + BasicInformationCompleteness × 0.15
     + DataQualityReliability × 0.10
 
 - **Status visibility (0–100):** `(status_clarity_score / 2) × 100`; missing/non-numeric treated as 0.
 - **Progress visibility (0–100):** `has_progress_info_score × 0.5 + ((update_visibility_score / 2) × 100) × 0.5`;  
   `has_progress_info` true → 100; false / null / unknown → 0 for that half.
+- **Document visibility (0–100):**  
+  `has_documents_score × 0.5 + ((document_completeness_score / 2) × 100) × 0.5`  
+  where `has_documents` true → 100 for `has_documents_score`, else 0; missing/non-numeric completeness → 0 in the normalised half.
 - **Basic information completeness (0–100):** `(non-missing required fields / 7) × 100` for  
   `council`, `application_no`, `address`, `development_type`, `description`, `lodged_date`, `decision`.
 - **Data quality reliability (0–100):** start at 100; −30 if date anomaly (decision date before lodged date, or only one of lodged/decision dates present); −20 if any required field missing; −30 if any rubric score outside [0, 2]; −30 if duplicate composite key (`council` + `application_no` + `address`); minimum 0.
 
-**Excluded from EBT (by design for this assignment revision)**  
-- `document_completeness_score` and `has_documents` — document linkage was **not systematically captured** in the original collection. Re-introduce into the primary score only after **verified** document-level data is updated.
-
 **`navigation_ease_score`**  
-- Retained in the dataset and UI as a **baseline usability field**. In the current 240-record snapshot it is **constant at 2**, so it does **not** differentiate councils and is **not** part of EBT.
+- Retained in the dataset and in the **legacy** weighted transparency index. It is **not** a direct EBT-D pillar.
 
 ### Legacy benchmark (reference only): weighted transparency index (0–2 rubric mix)
 The dashboard still computes the earlier weighted index (status / documents / updates / navigation) for continuity and sensitivity exports — **not** the Assignment 3 primary headline metric.
@@ -88,8 +91,8 @@ The dashboard still computes the earlier weighted index (status / documents / up
 - Navigation-focused: 0.25 / 0.25 / 0.20 / 0.30
 
 ### Outputs
-- Record-level EBT and components appear in `outputs/report_tables/combined_records_with_ass3_metrics.json`.
-- Council-level averages (`avg_evidence_based_transparency_score`, component averages, etc.) appear in `outputs/report_tables/council_transparency_summary.{csv,json}`.
+- Record-level EBT-D and components appear in `outputs/report_tables/combined_records_with_ass3_metrics.json` (field `evidence_based_transparency_score` holds the EBT-D value; `document_visibility_score` is the document pillar).
+- Council-level averages (`avg_evidence_based_transparency_score`, `avg_document_visibility_score`, component averages, etc.) appear in `outputs/report_tables/council_transparency_summary.{csv,json}`.
 
 ## Scoring Rubric (0-2)
 Status clarity score:
@@ -107,8 +110,7 @@ Update visibility score:
 - 1 = Limited progress information is shown, but stages are incomplete.
 - 2 = Clear progress history or workflow stages are visible.
 
-Navigation ease score (baseline usability field in dashboard):
-- Rubric meanings unchanged below; however **all current records show score = 2**, so this field does not discriminate councils in the present snapshot and is **not** used in EBT.
+Navigation ease score:
 - 0 = DA information is difficult to find or requires many steps.
 - 1 = Information is available but requires several clicks or interpretation.
 - 2 = Key DA information is easy to locate and understand.
@@ -165,9 +167,8 @@ npm run build:dashboard
 ```
 
 ## Interpretation Limits
-- **EBT** is a comparative **public-facing DA information transparency** indicator built from checkable fields and simple quality rules.
+- **EBT-D** is a comparative **public-facing DA information transparency** indicator built from checkable fields and simple quality rules.
 - It is **not** an official council rating and does **not** assess planning decision quality.
-- **Document** visibility is **not** part of the primary EBT until verified systematic document data exists (see modelling section).
 - Portal heterogeneity may influence comparability.
 
 ## Deployment / Future Work
@@ -191,4 +192,3 @@ npm run build:dashboard
 - [ ] Dashboard source in `frontend/`
 - [ ] Data pipeline source in `src/`
 - [ ] Updated `README.md`
-
