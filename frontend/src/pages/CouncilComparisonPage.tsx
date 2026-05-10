@@ -8,7 +8,6 @@ import {
   calculateDataQualityFlags,
   calculateEvidenceBasedTransparencyBreakdown,
   calculateWeightedTransparencyIndex,
-  derivePortalSource,
   meanTransparencyScore,
   pct,
   safeBool,
@@ -28,7 +27,6 @@ import {
 
 type CouncilRow = {
   council: string;
-  portalSource: string;
   cases: number;
   hasDocumentsPct: number;
   hasProgressPct: number;
@@ -90,7 +88,6 @@ export function CouncilComparisonPage() {
 
       return {
         council,
-        portalSource: derivePortalSource(council),
         cases,
         hasDocumentsPct: cases ? docs / cases : 0,
         hasProgressPct: cases ? prog / cases : 0,
@@ -343,24 +340,34 @@ export function CouncilComparisonPage() {
       </ChartCard>
 
       <div className="overflow-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
+          <h3 className="text-base font-semibold text-slate-900">
+            Council-level standardised records comparison
+          </h3>
+          <p className="mt-2 text-sm text-slate-700">
+            Compares standardised DA records across selected NSW councils based on document availability,
+            progress visibility, and transparency-related indicators. All rows are derived from each
+            council&apos;s own DA tracking portal data after normalisation — not a comparison between
+            separate &quot;portal vendor&quot; categories.
+          </p>
+        </div>
         <table className="min-w-[980px] w-full text-left text-sm">
           <thead className="sticky top-0 bg-slate-100">
             <tr className="border-b border-slate-200">
               <th className="p-3 font-semibold">Council</th>
-              <th className="p-3 font-semibold">Portal source</th>
-              <th className="p-3 font-semibold">Cases</th>
-              <th className="p-3 font-semibold">Docs</th>
-              <th className="p-3 font-semibold">Progress</th>
-              <th className="p-3 font-semibold">Avg status clarity</th>
-              <th className="p-3 font-semibold">Avg doc completeness</th>
-              <th className="p-3 font-semibold">Avg update visibility</th>
-              <th className="p-3 font-semibold">Avg navigation ease</th>
-              <th className="p-3 font-semibold">Avg EBT-D (0–100)</th>
-              <th className="p-3 font-semibold">Avg status vis.</th>
-              <th className="p-3 font-semibold">Avg progress vis.</th>
-              <th className="p-3 font-semibold">Avg document vis.</th>
-              <th className="p-3 font-semibold">Avg field completeness</th>
-              <th className="p-3 font-semibold">Avg DQR</th>
+              <th className="p-3 font-semibold">Number of records</th>
+              <th className="p-3 font-semibold">Document availability (%)</th>
+              <th className="p-3 font-semibold">Progress visibility (%)</th>
+              <th className="p-3 font-semibold">Avg assessment / status clarity (0–2)</th>
+              <th className="p-3 font-semibold">Avg documentation completeness (0–2)</th>
+              <th className="p-3 font-semibold">Avg update visibility (0–2)</th>
+              <th className="p-3 font-semibold">Avg navigation ease (0–2)</th>
+              <th className="p-3 font-semibold">Avg EBT-D / evidence score (0–100)</th>
+              <th className="p-3 font-semibold">Avg status visibility (pillar)</th>
+              <th className="p-3 font-semibold">Avg progress visibility (pillar)</th>
+              <th className="p-3 font-semibold">Avg document visibility (pillar)</th>
+              <th className="p-3 font-semibold">Avg field completeness (pillar)</th>
+              <th className="p-3 font-semibold">Avg DQR (pillar)</th>
               <th className="p-3 font-semibold">Legacy weighted index</th>
               <th className="p-3 font-semibold">Date anomalies</th>
               <th className="p-3 font-semibold">Review required</th>
@@ -373,7 +380,6 @@ export function CouncilComparisonPage() {
                 className={`border-b border-slate-100 ${idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"} hover:bg-sky-50`}
               >
                 <td className="p-3">{getCouncilLabel(r.council)}</td>
-                <td className="p-3">{r.portalSource}</td>
                 <td className="p-3">{r.cases}</td>
                 <td className="p-3">{pct(Math.round(r.hasDocumentsPct * r.cases), r.cases)}</td>
                 <td className="p-3">{pct(Math.round(r.hasProgressPct * r.cases), r.cases)}</td>

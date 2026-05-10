@@ -5,7 +5,6 @@ import {
   calculateDataQualityFlags,
   calculateEvidenceBasedTransparencyBreakdown,
   calculateWeightedTransparencyIndex,
-  derivePortalSource,
   getDuplicateCompositeKeys,
   safeBool,
   uniqueCouncils
@@ -17,7 +16,6 @@ type Filters = {
   council: string;
   decision: string;
   development_type: string;
-  portal_source: "" | "Council-managed portal" | "NSW Planning Portal";
   data_quality_flag: "" | "OK" | "Review required";
   has_documents: "" | "true" | "false";
   has_progress_info: "" | "true" | "false";
@@ -39,7 +37,6 @@ export function CaseExplorerPage() {
     council: "",
     decision: "",
     development_type: "",
-    portal_source: "",
     data_quality_flag: "",
     has_documents: "",
     has_progress_info: ""
@@ -68,7 +65,6 @@ export function CaseExplorerPage() {
       if (filters.decision && (r.decision ?? "") !== filters.decision) return false;
       if (filters.development_type && (r.development_type ?? "") !== filters.development_type)
         return false;
-      if (filters.portal_source && derivePortalSource(r.council) !== filters.portal_source) return false;
       if (filters.data_quality_flag) {
         const q = calculateDataQualityFlags(r).dataQualityFlag;
         if (q !== filters.data_quality_flag) return false;
@@ -180,20 +176,6 @@ export function CaseExplorerPage() {
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-600">portal_source</label>
-            <select
-              className="mt-1 w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
-              value={filters.portal_source}
-              onChange={(e) =>
-                setFilters((f) => ({ ...f, portal_source: e.target.value as Filters["portal_source"] }))
-              }
-            >
-              <option value="">All</option>
-              <option value="Council-managed portal">Council-managed portal</option>
-              <option value="NSW Planning Portal">NSW Planning Portal</option>
-            </select>
-          </div>
-          <div>
             <label className="text-xs font-medium text-slate-600">data_quality_flag</label>
             <select
               className="mt-1 w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
@@ -246,7 +228,6 @@ export function CaseExplorerPage() {
               <th className="p-3 font-semibold">Decision</th>
               <th className="p-3 font-semibold">Lodged</th>
               <th className="p-3 font-semibold">Decision date</th>
-              <th className="p-3 font-semibold">Portal source</th>
               <th className="p-3 font-semibold">EBT-D (0–100)</th>
               <th className="p-3 font-semibold">Legacy weighted idx</th>
               <th className="p-3 font-semibold">Data quality</th>
@@ -268,7 +249,6 @@ export function CaseExplorerPage() {
                 <td className="p-3">{r.decision ?? "—"}</td>
                 <td className="p-3">{r.lodged_date ?? "—"}</td>
                 <td className="p-3">{r.decision_date ?? "—"}</td>
-                <td className="p-3">{derivePortalSource(r.council)}</td>
                 <td className="p-3">
                   {calculateEvidenceBasedTransparencyBreakdown(r, duplicateKeys).evidence_based_transparency_score.toFixed(
                     1
@@ -332,10 +312,6 @@ export function CaseExplorerPage() {
             <div className="rounded-md border border-slate-200 p-3">
               <div className="text-xs font-semibold text-slate-600">has_progress_info</div>
               <div className="mt-1 text-sm">{String(safeBool(selected.has_progress_info))}</div>
-            </div>
-            <div className="rounded-md border border-slate-200 p-3">
-              <div className="text-xs font-semibold text-slate-600">portal_source</div>
-              <div className="mt-1 text-sm">{derivePortalSource(selected.council)}</div>
             </div>
             <div className="rounded-md border border-violet-200 bg-violet-50 p-3 md:col-span-2">
               <div className="text-xs font-semibold text-slate-700">

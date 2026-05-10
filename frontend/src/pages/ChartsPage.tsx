@@ -9,7 +9,6 @@ import {
   calculateEvidenceBasedTransparencyBreakdown,
   calculateSensitivityScores,
   calculateWeightedTransparencyIndex,
-  derivePortalSource,
   meanTransparencyScore,
   safeBool,
   uniqueCouncils,
@@ -59,7 +58,6 @@ export function ChartsPage() {
 
       return {
         council,
-        portalSource: derivePortalSource(council),
         cases,
         documentsPct: cases ? Math.round((docs / cases) * 100) : 0,
         progressPct: cases ? Math.round((prog / cases) * 100) : 0,
@@ -100,25 +98,6 @@ export function ChartsPage() {
     sensitivityDoc: r.sensitivityDoc === null ? null : Number(r.sensitivityDoc.toFixed(2)),
     sensitivityNav: r.sensitivityNav === null ? null : Number(r.sensitivityNav.toFixed(2))
   }));
-
-  const portalComparison = [
-    "Council-managed portal",
-    "NSW Planning Portal"
-  ].map((portalSource) => {
-    const rows = byCouncil.filter((r) => r.portalSource === portalSource);
-    const cases = rows.reduce((sum, r) => sum + r.cases, 0);
-    const docsWeighted = cases
-      ? Math.round(rows.reduce((sum, r) => sum + r.documentsPct * r.cases, 0) / cases)
-      : 0;
-    const progressWeighted = cases
-      ? Math.round(rows.reduce((sum, r) => sum + r.progressPct * r.cases, 0) / cases)
-      : 0;
-    return {
-      portalSource,
-      documentsPct: docsWeighted,
-      progressPct: progressWeighted
-    };
-  });
 
   return (
     <div className="space-y-6">
@@ -407,26 +386,6 @@ export function ChartsPage() {
               <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
               <Bar dataKey="dateAnomalyCount" name="Date anomalies" fill="#f59e0b" />
               <Bar dataKey="reviewRequiredCount" name="Review required" fill="#ef4444" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </ChartCard>
-
-      <ChartCard
-        title="Portal Source Comparison"
-        subtitle="Document and progress visibility by portal source"
-        insight="Compares Council-managed portals against NSW Planning Portal experience."
-      >
-        <div className="h-[380px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={portalComparison} margin={{ top: 20, right: 16, left: 4, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="portalSource" />
-              <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-              <Tooltip formatter={(v) => `${v}%`} />
-              <Legend verticalAlign="top" align="center" height={32} wrapperStyle={{ top: 0 }} />
-              <Bar dataKey="documentsPct" name="Documents (%)" fill="#0ea5e9" />
-              <Bar dataKey="progressPct" name="Progress (%)" fill="#22c55e" />
             </BarChart>
           </ResponsiveContainer>
         </div>

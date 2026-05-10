@@ -4,16 +4,6 @@ export function safeBool(v: boolean | null | undefined): boolean {
   return v === true;
 }
 
-export type PortalSource = "Council-managed portal" | "NSW Planning Portal";
-
-export function derivePortalSource(council: string | null | undefined): PortalSource {
-  const c = (council ?? "").trim();
-  if (c === "Georges River" || c === "North Sydney" || c === "Sutherland Shire") {
-    return "Council-managed portal";
-  }
-  return "NSW Planning Portal";
-}
-
 export function bucketDecision(decision: string | null | undefined): DecisionBucket {
   const d = (decision ?? "").trim();
   if (!d) return "Other/Unknown";
