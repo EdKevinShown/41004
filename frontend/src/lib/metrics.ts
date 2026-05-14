@@ -29,6 +29,12 @@ export function pct(numer: number, denom: number): string {
   return `${Math.round((numer / denom) * 100)}%`;
 }
 
+/** Percent for display with two decimal places (e.g. KPI cards). */
+export function pctFixed2(numer: number, denom: number): string {
+  if (!denom) return "0.00%";
+  return `${((numer / denom) * 100).toFixed(2)}%`;
+}
+
 export function avg(nums: Array<number | null | undefined>): number | null {
   const xs = nums.filter((n): n is number => typeof n === "number" && Number.isFinite(n));
   if (!xs.length) return null;
@@ -157,6 +163,48 @@ export function getDuplicateCompositeKeys(records: StandardCouncilRecord[]): Set
     if (n > 1) dup.add(k);
   }
   return dup;
+}
+
+/**
+ * Dataset-level data-quality counters aligned with Assignment 3 `data_quality_report.json`
+ * definitions (same rules as `calculateDataQualityFlags` + duplicate key group count).
+ */
+export function aggregateDashboardDataQuality(records: StandardCouncilRecord[]): {
+  missingRequiredFieldsTotal: number;
+  recordsWithMissingRequiredFields: number;
+  dateAnomalyCount: number;
+  recordsRequiringReview: number;
+  scoreOutOfRangeCount: number;
+  booleanParseIssueCount: number;
+  duplicateKeyCount: number;
+} {
+  const duplicateKeys = getDuplicateCompositeKeys(records);
+  let missingRequiredFieldsTotal = 0;
+  let recordsWithMissingRequiredFields = 0;
+  let dateAnomalyCount = 0;
+  let recordsRequiringReview = 0;
+  let scoreOutOfRangeCount = 0;
+  let booleanParseIssueCount = 0;
+
+  for (const r of records) {
+    const flags = calculateDataQualityFlags(r);
+    missingRequiredFieldsTotal += flags.missingRequiredFieldsCount;
+    if (flags.missingRequiredFieldsCount > 0) recordsWithMissingRequiredFields++;
+    if (flags.dateAnomaly) dateAnomalyCount++;
+    if (flags.dataQualityFlag === "Review required") recordsRequiringReview++;
+    if (flags.scoreOutOfRange) scoreOutOfRangeCount++;
+    if (flags.booleanParseIssue) booleanParseIssueCount++;
+  }
+
+  return {
+    missingRequiredFieldsTotal,
+    recordsWithMissingRequiredFields,
+    dateAnomalyCount,
+    recordsRequiringReview,
+    scoreOutOfRangeCount,
+    booleanParseIssueCount,
+    duplicateKeyCount: duplicateKeys.size
+  };
 }
 
 export interface EvidenceBasedTransparencyBreakdown {

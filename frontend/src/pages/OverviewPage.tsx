@@ -1,11 +1,13 @@
 import { StatCard } from "../components/StatCard";
 import { useRecords } from "../data/useRecords";
 import {
+  aggregateDashboardDataQuality,
   bucketDecision,
   calculateEvidenceBasedTransparencyScore,
   calculateWeightedTransparencyIndex,
   getDuplicateCompositeKeys,
   pct,
+  pctFixed2,
   safeBool
 } from "../lib/metrics";
 
@@ -46,10 +48,11 @@ export function OverviewPage() {
     weightedScores.length > 0
       ? (weightedScores.reduce((a, b) => a + b, 0) / weightedScores.length).toFixed(2)
       : "—";
-  const avgEbt =
-    ebtScores.length > 0
-      ? (ebtScores.reduce((a, b) => a + b, 0) / ebtScores.length).toFixed(1)
-      : "—";
+  const avgEbtNum =
+    ebtScores.length > 0 ? ebtScores.reduce((a, b) => a + b, 0) / ebtScores.length : null;
+  const avgEbt = avgEbtNum !== null ? avgEbtNum.toFixed(2) : "—";
+
+  const dq = aggregateDashboardDataQuality(records);
 
   const findings: string[] = [
     `${pct(approved, total)} of applications are currently marked as Approved.`,
@@ -102,17 +105,55 @@ export function OverviewPage() {
         </div>
       </section>
 
+      <section className="rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+        <h3 className="text-base font-semibold text-slate-900">EBT-D interpretation</h3>
+        <p className="mt-2 text-sm leading-6 text-slate-700">
+          EBT-D is a comparative transparency indicator based on visible public-facing DA portal
+          evidence. It does not evaluate planning decision quality.
+        </p>
+      </section>
+
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+          Assignment 3 headline KPIs
+        </h3>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatCard label="Total Records" value={total} sub="All normalized cases in this dashboard" />
+          <StatCard label="Total Councils" value={councils.size} sub="Distinct council datasets" />
+          <StatCard
+            label="Overall Avg EBT-D"
+            value={avgEbt}
+            sub="Mean case-level EBT-D (0–100), primary model"
+          />
+          <StatCard
+            label="Document Availability Rate"
+            value={pctFixed2(hasDocs, total)}
+            sub={`${hasDocs} of ${total} cases with has_documents = true`}
+          />
+          <StatCard
+            label="Progress Visibility Rate"
+            value={pctFixed2(hasProgress, total)}
+            sub={`${hasProgress} of ${total} cases with has_progress_info = true`}
+          />
+          <StatCard
+            label="Records Requiring Review"
+            value={dq.recordsRequiringReview}
+            sub="Missing fields, date anomaly, score range, or boolean parse issue"
+          />
+          <StatCard
+            label="Date Anomalies"
+            value={dq.dateAnomalyCount}
+            sub="Per-record date consistency flags (same logic as data quality report)"
+          />
+          <StatCard
+            label="Legacy weighted index (reference)"
+            value={avgWeighted}
+            sub="Not primary; rubric mix incl. navigation"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="Total Application Records"
-          value={total}
-          sub="All normalized cases included in this dashboard"
-        />
-        <StatCard
-          label="Councils Covered"
-          value={councils.size}
-          sub="Distinct NSW council datasets in scope"
-        />
         <StatCard
           label="Approved Outcomes"
           value={approved}
@@ -124,35 +165,15 @@ export function OverviewPage() {
           value={refusedDeclined}
           sub={`${pct(refusedDeclined, total)} of all cases`}
         />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
         <StatCard
-          label="Pending / In Progress / Under Assessment Cases"
+          label="Pending / In Progress / Under Assessment"
           value={pendingInProgressUnder}
           sub={`${pct(pendingInProgressUnder, total)} of all cases are still active`}
         />
         <StatCard
-          label="Document Availability Rate"
-          value={pct(hasDocs, total)}
-          sub={`${hasDocs} of ${total} cases include documents`}
-          hint="Based on has_documents boolean field"
-        />
-        <StatCard
-          label="Progress Information Visibility"
-          value={pct(hasProgress, total)}
-          sub={`${hasProgress} of ${total} cases expose progress info`}
-          hint="Based on has_progress_info boolean field"
-        />
-        <StatCard
-          label="Avg EBT-D score"
-          value={avgEbt}
-          sub="Primary (0–100): status 25%, progress 25%, document 25%, completeness 15%, reliability 10%"
-        />
-        <StatCard
-          label="Legacy weighted index (reference)"
-          value={avgWeighted}
-          sub="Not primary; rubric mix incl. navigation — headline metric is EBT-D"
+          label="Missing required field instances"
+          value={dq.missingRequiredFieldsTotal}
+          sub={`Across ${dq.recordsWithMissingRequiredFields} cases with any gap`}
         />
       </div>
 
@@ -176,15 +197,10 @@ export function OverviewPage() {
           differences.
         </p>
         <p className="mt-2 text-sm text-slate-700">
-          Scores are comparative transparency indicators based on visible portal evidence. They do
-          not assess the quality of council planning decisions.
-        </p>
-        <p className="mt-2 text-sm text-slate-700">
-          Document visibility in EBT-D uses verified re-crawl results for <span className="font-semibold">has_documents</span>{" "}
-          together with the document completeness rubric field.
+          Document visibility in EBT-D uses verified re-crawl results for{" "}
+          <span className="font-semibold">has_documents</span> together with the document completeness rubric field.
         </p>
       </section>
     </div>
   );
 }
-

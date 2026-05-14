@@ -2,10 +2,10 @@
   {
     "total_records": 240,
     "total_councils": 12,
-    "missing_required_fields_total": 30,
-    "records_with_missing_required_fields": 30,
+    "missing_required_fields_total": 16,
+    "records_with_missing_required_fields": 16,
     "score_out_of_range_count": 0,
-    "date_anomaly_count": 168,
+    "date_anomaly_count": 182,
     "duplicate_key_count": 0,
     "boolean_parse_issue_count": 0,
     "records_requiring_review": 188,

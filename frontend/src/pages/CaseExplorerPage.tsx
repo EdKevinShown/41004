@@ -106,6 +106,11 @@ export function CaseExplorerPage() {
         <p className="mt-1 text-sm text-slate-600">
           Search and filter individual cases, then open a full record panel for detailed review.
         </p>
+        <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-700">
+          Individual cases may share the same EBT-D score because the model uses discrete yes/no and 0–2
+          coded fields. Case-level scores are best used for examples and review, while council-level
+          averages are better for comparison.
+        </p>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-8">
           <div className="md:col-span-2">
             <label className="text-xs font-medium text-slate-600">Search</label>

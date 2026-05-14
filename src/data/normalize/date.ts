@@ -29,6 +29,41 @@ function isValidYMD(y: number, m: number, d: number): boolean {
   );
 }
 
+/** English month tokens (lowercase), including common abbreviations (Sep/Sept). */
+const ENGLISH_MONTH_TO_NUM: Record<string, number> = {
+  jan: 1,
+  january: 1,
+  feb: 2,
+  february: 2,
+  mar: 3,
+  march: 3,
+  apr: 4,
+  april: 4,
+  may: 5,
+  jun: 6,
+  june: 6,
+  jul: 7,
+  july: 7,
+  aug: 8,
+  august: 8,
+  sep: 9,
+  sept: 9,
+  september: 9,
+  oct: 10,
+  october: 10,
+  nov: 11,
+  november: 11,
+  dec: 12,
+  december: 12
+};
+
+function monthNumFromEnglishToken(token: string): number | null {
+  const key = token.trim().toLowerCase();
+  if (!key) return null;
+  const n = ENGLISH_MONTH_TO_NUM[key];
+  return n === undefined ? null : n;
+}
+
 export function parseToIsoDate(
   input: unknown,
   opts?: { minYear?: number; maxYear?: number }
@@ -80,6 +115,28 @@ export function parseToIsoDate(
     const d = Number(dmy[1]);
     const m = Number(dmy[2]);
     const y = Number(dmy[3]);
+    if (!isValidYMD(y, m, d)) {
+      return { value: null, error: { code: "invalid_calendar_date", input: raw } };
+    }
+    if (
+      (opts?.minYear !== undefined && y < opts.minYear) ||
+      (opts?.maxYear !== undefined && y > opts.maxYear)
+    ) {
+      return { value: null, error: { code: "out_of_range", input: raw } };
+    }
+    const isoValue = `${y}-${pad2(m)}-${pad2(d)}` as IsoDateString;
+    return { value: isoValue };
+  }
+
+  // English month: "D Mon YYYY" / "DD Month YYYY" (e.g. 08 May 2026, 8 January 2026)
+  const dMonY = raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+  if (dMonY) {
+    const d = Number(dMonY[1]);
+    const m = monthNumFromEnglishToken(dMonY[2]!);
+    const y = Number(dMonY[3]);
+    if (m === null) {
+      return { value: null, error: { code: "invalid_format", input: raw } };
+    }
     if (!isValidYMD(y, m, d)) {
       return { value: null, error: { code: "invalid_calendar_date", input: raw } };
     }
